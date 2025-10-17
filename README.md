@@ -1,36 +1,174 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RecipeShare - Global Recipe Sharing Platform
+
+A modern, social recipe sharing platform where users can discover and share culinary creations from around the world. Built with Next.js, TypeScript, Tailwind CSS, Auth0, and Supabase.
+
+## Features
+
+- 🌍 **Global Recipe Discovery**: Browse recipes from different countries with country-based filtering
+- 🔐 **Authentication**: Secure login with Auth0 (Google OAuth + username/password)
+- ❤️ **Social Features**: Like and comment on recipes
+- 📱 **Responsive Design**: Beautiful, modern UI that works on all devices
+- 🍽️ **Rich Recipe Details**: Complete ingredients, instructions, prep/cook times, and serving sizes
+- 👤 **User Profiles**: Personal recipe collections and user information
+- 🏷️ **Country Tagging**: Each recipe is tagged with its country of origin
+
+## Tech Stack
+
+- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes, Supabase
+- **Database**: PostgreSQL (via Supabase)
+- **Authentication**: Auth0
+- **Deployment**: Vercel (recommended)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ 
+- npm or yarn
+- Auth0 account
+- Supabase account
+
+### 1. Clone and Install
+
+```bash
+git clone <your-repo-url>
+cd recipe-share
+npm install
+```
+
+### 2. Environment Setup
+
+Create a `.env.local` file in the root directory:
+
+```env
+# Auth0 Configuration
+AUTH0_SECRET='use [openssl rand -hex 32] to generate a 32 bytes value'
+AUTH0_BASE_URL='http://localhost:3000'
+AUTH0_ISSUER_BASE_URL='https://YOUR_AUTH0_DOMAIN.auth0.com'
+AUTH0_CLIENT_ID='YOUR_AUTH0_CLIENT_ID'
+AUTH0_CLIENT_SECRET='YOUR_AUTH0_CLIENT_SECRET'
+
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL='YOUR_SUPABASE_URL'
+NEXT_PUBLIC_SUPABASE_ANON_KEY='YOUR_SUPABASE_ANON_KEY'
+SUPABASE_SERVICE_ROLE_KEY='YOUR_SUPABASE_SERVICE_ROLE_KEY'
+```
+
+### 3. Auth0 Setup
+
+1. Create an Auth0 account at [auth0.com](https://auth0.com)
+2. Create a new application (Single Page Application)
+3. Add `http://localhost:3000/api/auth/callback` to Allowed Callback URLs
+4. Add `http://localhost:3000` to Allowed Web Origins
+5. Enable Google Social Connection in Auth0 Dashboard
+6. Copy your Auth0 credentials to `.env.local`
+
+### 4. Supabase Setup
+
+1. Create a Supabase project at [supabase.com](https://supabase.com)
+2. Go to SQL Editor and run the schema from `supabase-schema.sql`
+3. Copy your Supabase URL and keys to `.env.local`
+
+### 5. Run the Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Database Schema
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application uses the following main tables:
 
-## Learn More
+- **users**: User profiles and authentication data
+- **recipes**: Recipe information with country tagging
+- **likes**: User likes on recipes
+- **comments**: User comments on recipes
 
-To learn more about Next.js, take a look at the following resources:
+See `supabase-schema.sql` for the complete schema.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                    # Next.js app directory
+│   ├── recipes/           # Recipe-related pages
+│   │   ├── [id]/         # Individual recipe pages
+│   │   └── new/          # Create new recipe
+│   ├── layout.tsx        # Root layout
+│   └── page.tsx          # Home page
+├── components/            # React components
+│   ├── Header.tsx        # Navigation header
+│   ├── Hero.tsx          # Landing page hero
+│   ├── RecipeCard.tsx    # Recipe card component
+│   ├── RecipeGrid.tsx    # Recipe grid layout
+│   ├── CountryFilter.tsx # Country filtering
+│   └── LoadingSpinner.tsx
+├── lib/                   # Utility libraries
+│   ├── supabase.ts       # Supabase client & types
+│   └── auth0.ts          # Auth0 configuration
+└── pages/api/            # API routes
+    └── auth/             # Auth0 API routes
+```
 
-## Deploy on Vercel
+## Key Features Implementation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Authentication
+- Auth0 integration with Google OAuth
+- User session management
+- Protected routes and API endpoints
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Recipe Management
+- Create, read, update, delete recipes
+- Rich text editing for ingredients and instructions
+- Image upload support
+- Country-based categorization
+
+### Social Features
+- Like/unlike recipes
+- Comment system
+- User profiles and recipe collections
+
+### Country Filtering
+- Filter recipes by country of origin
+- Visual country flags and names
+- "All Countries" option for global view
+
+## Deployment
+
+### Vercel (Recommended)
+
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Add environment variables in Vercel dashboard
+4. Deploy!
+
+### Other Platforms
+
+The app can be deployed to any platform that supports Next.js:
+- Netlify
+- Railway
+- DigitalOcean App Platform
+- AWS Amplify
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
+
+## License
+
+MIT License - see LICENSE file for details.
+
+## Support
+
+For support, please open an issue on GitHub or contact the development team.
+
+---
+
+Built with ❤️ for food lovers around the world! 🌍🍽️
