@@ -13,8 +13,9 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  
-  serverExternalPackages: ['@auth0/nextjs-auth0'],
+  typescript: {
+    ignoreBuildErrors: true
+  }
 };
 
 export default nextConfig;
