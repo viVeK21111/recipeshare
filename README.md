@@ -115,7 +115,7 @@ See `supabase-schema.sql` for the complete schema.
 ## Deployment
 
 ### Vercel
-link: 
+link: https://recipeshare-ten.vercel.app
 
 ---
 

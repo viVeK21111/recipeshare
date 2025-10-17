@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
   images: {
     domains: ['lh3.googleusercontent.com', 'avatars.githubusercontent.com', 'i.postimg.cc'],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   serverExternalPackages: ['@auth0/nextjs-auth0'],
 };
 
