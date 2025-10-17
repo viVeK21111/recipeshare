@@ -1,4 +1,4 @@
-// src/app/not-found.tsx
+
 'use client'
 
 export default function NotFound() {
