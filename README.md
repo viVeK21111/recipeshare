@@ -89,28 +89,6 @@ The application uses the following main tables:
 
 See `supabase-schema.sql` for the complete schema.
 
-## Project Structure
-
-```
-src/
-├── app/                    # Next.js app directory
-│   ├── recipes/           # Recipe-related pages
-│   │   ├── [id]/         # Individual recipe pages
-│   │   └── new/          # Create new recipe
-│   ├── layout.tsx        # Root layout
-│   └── page.tsx          # Home page
-├── components/            # React components
-│   ├── Header.tsx        # Navigation header
-│   ├── Hero.tsx          # Landing page hero
-│   ├── RecipeCard.tsx    # Recipe card component
-│   ├── RecipeGrid.tsx    # Recipe grid layout
-│   ├── CountryFilter.tsx # Country filtering
-│   └── LoadingSpinner.tsx
-├── lib/                   # Utility libraries
-│   ├── supabase.ts       # Supabase client & types
-│   └── auth0.ts          # Auth0 configuration
-└── pages/api/            # API routes
-    └── auth/             # Auth0 API routes
 ```
 
 ## Key Features Implementation
@@ -138,36 +116,7 @@ src/
 
 ## Deployment
 
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy!
-
-### Other Platforms
-
-The app can be deployed to any platform that supports Next.js:
-- Netlify
-- Railway
-- DigitalOcean App Platform
-- AWS Amplify
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## License
-
-MIT License - see LICENSE file for details.
-
-## Support
-
-For support, please open an issue on GitHub or contact the development team.
+### Vercel
 
 ---
 
