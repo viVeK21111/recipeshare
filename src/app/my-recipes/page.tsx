@@ -1,4 +1,5 @@
 'use client'
+export const dynamic = 'force-dynamic'
 
 import { useUser } from '@auth0/nextjs-auth0/client'
 import { useEffect, useState } from 'react'

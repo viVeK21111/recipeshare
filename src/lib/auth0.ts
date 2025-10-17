@@ -1,4 +1,5 @@
 import { initAuth0 } from '@auth0/nextjs-auth0';
+export const dynamic = 'force-dynamic'
 
 export default initAuth0({
   secret: process.env.AUTH0_SECRET,
