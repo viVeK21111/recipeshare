@@ -89,8 +89,6 @@ The application uses the following main tables:
 
 See `supabase-schema.sql` for the complete schema.
 
-```
-
 ## Key Features Implementation
 
 ### Authentication
@@ -117,6 +115,7 @@ See `supabase-schema.sql` for the complete schema.
 ## Deployment
 
 ### Vercel
+link: 
 
 ---
 
