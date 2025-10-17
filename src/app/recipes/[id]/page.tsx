@@ -336,7 +336,7 @@ export default function RecipeDetail() {
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Share your thoughts about this recipe..."
-                  className="flex-1 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
+                  className="flex-1 p-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
                   rows={3}
                 />
                 <button

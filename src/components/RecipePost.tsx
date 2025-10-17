@@ -1,5 +1,4 @@
 'use client'
-export const dynamic = 'force-dynamic'
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -46,13 +45,38 @@ export default function RecipePost({ recipe }: RecipePostProps) {
   const [isFavorited, setIsFavorited] = useState(false)
   const [likesCount, setLikesCount] = useState(recipe.likes_count || 0)
   const [showFullDescription, setShowFullDescription] = useState(false)
+  const [isProcessingLike, setIsProcessingLike] = useState(false)
+  const [isProcessingFavorite, setIsProcessingFavorite] = useState(false)
 
-  // Check if recipe is favorited on mount
+  // Check if recipe is liked and favorited on mount
   useEffect(() => {
     if (user) {
+      checkIfLiked()
       checkIfFavorited()
     }
   }, [user, recipe.id])
+
+  const checkIfLiked = async () => {
+    if (!user) return
+    
+    try {
+      const { data, error } = await supabase
+        .from('likes')
+        .select('id')
+        .eq('user_id', user.sub)
+        .eq('recipe_id', recipe.id)
+        .maybeSingle()
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error checking like:', error)
+        return
+      }
+
+      setIsLiked(!!data)
+    } catch (error) {
+      console.error('Error in checkIfLiked:', error)
+    }
+  }
 
   const checkIfFavorited = async () => {
     if (!user) return
@@ -63,14 +87,16 @@ export default function RecipePost({ recipe }: RecipePostProps) {
         .select('id')
         .eq('user_id', user.sub)
         .eq('recipe_id', recipe.id)
-        .single()
+        .maybeSingle()
 
-      if (data) {
-        setIsFavorited(true)
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error checking favorite:', error)
+        return
       }
+
+      setIsFavorited(!!data)
     } catch (error) {
-      // Not favorited
-      setIsFavorited(false)
+      console.error('Error in checkIfFavorited:', error)
     }
   }
 
@@ -82,10 +108,70 @@ export default function RecipePost({ recipe }: RecipePostProps) {
       window.location.href = '/api/auth/login'
       return
     }
-    
-    // TODO: Implement like functionality with Supabase
-    setIsLiked(!isLiked)
-    setLikesCount(prev => isLiked ? prev - 1 : prev + 1)
+
+    if (isProcessingLike) return
+    setIsProcessingLike(true)
+
+    try {
+      if (isLiked) {
+        // Unlike: Remove from likes table
+        const { error } = await supabase
+          .from('likes')
+          .delete()
+          .eq('user_id', user.sub)
+          .eq('recipe_id', recipe.id)
+
+        if (error) {
+          console.error('Unlike error:', error)
+          throw error
+        }
+        
+        setIsLiked(false)
+        setLikesCount(prev => Math.max(0, prev - 1))
+        console.log('Unliked recipe')
+      } else {
+        // Like: Add to likes table
+        const { data, error } = await supabase
+          .from('likes')
+          .insert({
+            user_id: user.sub,
+            recipe_id: recipe.id
+          })
+          .select()
+
+        if (error) {
+          // Check if it's a duplicate error
+          if (error.code === '23505') {
+            // Already liked - just update UI
+            setIsLiked(true)
+            console.log('Already liked')
+          } else {
+            console.error('Like error:', error)
+            throw error
+          }
+        } else {
+          setIsLiked(true)
+          setLikesCount(prev => prev + 1)
+          console.log('Liked recipe')
+        }
+      }
+    } catch (error: any) {
+      console.error('Error toggling like:', error)
+      
+      // Revert UI on error
+      setIsLiked(!isLiked)
+      
+      let errorMessage = 'Failed to update like. '
+      if (error.code === '42501') {
+        errorMessage += 'Permission denied. Please check your database policies.'
+      } else {
+        errorMessage += 'Please try again.'
+      }
+      
+      alert(errorMessage)
+    } finally {
+      setIsProcessingLike(false)
+    }
   }
 
   const handleFavorite = async (e: React.MouseEvent) => {
@@ -97,6 +183,9 @@ export default function RecipePost({ recipe }: RecipePostProps) {
       return
     }
 
+    if (isProcessingFavorite) return
+    setIsProcessingFavorite(true)
+
     try {
       if (isFavorited) {
         // Remove from favorites
@@ -106,25 +195,52 @@ export default function RecipePost({ recipe }: RecipePostProps) {
           .eq('user_id', user.sub)
           .eq('recipe_id', recipe.id)
 
-        if (error) throw error
+        if (error) {
+          console.error('Delete favorite error:', error)
+          throw error
+        }
+        
         setIsFavorited(false)
+        console.log('Removed from favorites')
       } else {
         // Add to favorites
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('favorites')
-          .insert([
-            {
-              user_id: user.sub,
-              recipe_id: recipe.id
-            }
-          ])
+          .insert({
+            user_id: user.sub,
+            recipe_id: recipe.id
+          })
+          .select()
 
-        if (error) throw error
-        setIsFavorited(true)
+        if (error) {
+          if (error.code === '23505') {
+            setIsFavorited(true)
+            console.log('Already favorited')
+          } else {
+            console.error('Add favorite error:', error)
+            throw error
+          }
+        } else {
+          setIsFavorited(true)
+          console.log('Added to favorites')
+        }
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error toggling favorite:', error)
-      alert('Failed to update favorites. Please try again.')
+      
+      let errorMessage = 'Failed to update favorites. '
+      if (error.code === '42501') {
+        errorMessage += 'Permission denied. Please check your database policies.'
+      } else if (error.code === '23505') {
+        errorMessage += 'This recipe is already in your favorites.'
+        setIsFavorited(true)
+      } else {
+        errorMessage += 'Please try again.'
+      }
+      
+      alert(errorMessage)
+    } finally {
+      setIsProcessingFavorite(false)
     }
   }
 
@@ -167,7 +283,21 @@ export default function RecipePost({ recipe }: RecipePostProps) {
           </div>
         </div>
         
-      
+        {/* Favorite Button in Header */}
+        <button
+          onClick={handleFavorite}
+          disabled={isProcessingFavorite}
+          className={`p-2 hover:bg-gray-100 rounded-full transition-colors ${
+            isProcessingFavorite ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
+          title={isFavorited ? "Remove from favorites" : "Add to favorites"}
+        >
+          {isFavorited ? (
+            <BookmarkSolidIcon className="h-6 w-6 text-orange-600" />
+          ) : (
+            <BookmarkIcon className="h-6 w-6 text-gray-600 hover:text-orange-600" />
+          )}
+        </button>
       </div>
 
       {/* Recipe Image */}
@@ -191,7 +321,10 @@ export default function RecipePost({ recipe }: RecipePostProps) {
         <div className="flex items-center space-x-4">
           <button
             onClick={handleLike}
-            className="flex items-center space-x-1.5 group"
+            disabled={isProcessingLike}
+            className={`flex items-center space-x-1.5 group ${
+              isProcessingLike ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           >
             {isLiked ? (
               <HeartSolidIcon className="h-6 w-6 text-red-500" />
@@ -207,18 +340,6 @@ export default function RecipePost({ recipe }: RecipePostProps) {
             </span>
           </button>
         </div>
-          {/* Favorite Button*/}
-          <button
-          onClick={handleFavorite}
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-          title={isFavorited ? "Remove from favorites" : "Add to favorites"}
-        >
-          {isFavorited ? (
-            <BookmarkSolidIcon className="h-6 w-6 text-orange-600" />
-          ) : (
-            <BookmarkIcon className="h-6 w-6 text-gray-600 hover:text-orange-600" />
-          )}
-        </button>
       </div>
 
       {/* Post Content */}
