@@ -1,4 +1,6 @@
 // src/app/not-found.tsx
+'use client'
+
 export default function NotFound() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white text-gray-800">
