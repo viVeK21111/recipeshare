@@ -1,12 +1,8 @@
-﻿recipes page ui/ux edit
+﻿
+recipes page ui/ux edit
 /settings page
 changable user profile pic
 name selection for site
 logo design
 
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/viVeK21111/recipeshare.git
-git push -u origin main
+

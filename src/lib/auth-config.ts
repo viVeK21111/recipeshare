@@ -8,6 +8,7 @@ export const AUTH_CONFIG = {
       '/favorites',
       '/settings',
       '/favorites',
+      '/profile',
       // Add more protected routes here as needed
     ],
     

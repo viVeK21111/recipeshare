@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Recipe, supabase, formatDateTime } from '@/lib/supabase'
@@ -47,6 +48,7 @@ export default function RecipePost({ recipe }: RecipePostProps) {
   const [showFullDescription, setShowFullDescription] = useState(false)
   const [isProcessingLike, setIsProcessingLike] = useState(false)
   const [isProcessingFavorite, setIsProcessingFavorite] = useState(false)
+  const router = useRouter()
 
   // Check if recipe is liked and favorited on mount
   useEffect(() => {
@@ -255,33 +257,44 @@ export default function RecipePost({ recipe }: RecipePostProps) {
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-4 overflow-hidden hover:shadow-md transition-shadow duration-200">
       {/* Post Header */}
       <div className="p-4 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          {recipe.user?.avatar_url ? (
-            <Image
-              src={recipe.user.avatar_url}
-              alt={recipe.user.name}
-              width={40}
-              height={40}
-              className="rounded-full"
-            />
-          ) : (
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-400 rounded-full flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">
-                {recipe.user?.name?.charAt(0) || 'U'}
-              </span>
-            </div>
-          )}
-          <div>
-            <p className="font-semibold text-gray-900">
-              {recipe.user?.name || 'Anonymous'}
-            </p>
-            <div className="flex items-center space-x-2 text-xs text-gray-500">
-              <span>{countryInfo.flag} {countryInfo.name}</span>
-              <span>•</span>
-              <span>{formatDateTime(recipe.created_at)}</span>
-            </div>
+        <button
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          if (user?.sub === recipe.user_id) {
+            router.push('/profile')
+          } else {
+            router.push(`/profile/${encodeURIComponent(recipe.user_id)}`)
+          }
+        }}
+        className="flex items-center hover:cursor-pointer space-x-3 hover:opacity-80 transition-opacity"
+      >
+        {recipe.user?.avatar_url ? (
+          <Image
+            src={recipe.user.avatar_url}
+            alt={recipe.user.name}
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
+        ) : (
+          <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-400 rounded-full flex items-center justify-center">
+            <span className="text-white font-semibold text-sm">
+              {recipe.user?.name?.charAt(0) || 'U'}
+            </span>
+          </div>
+        )}
+        <div className="text-left">
+          <p className="font-semibold text-gray-900">
+            {recipe.user?.name || 'Anonymous'}
+          </p>
+          <div className="flex items-center space-x-2 text-xs text-gray-500">
+            <span>{countryInfo.flag} {countryInfo.name}</span>
+            <span>•</span>
+            <span>{formatDateTime(recipe.created_at)}</span>
           </div>
         </div>
+      </button>
         
         {/* Favorite Button in Header */}
         <button

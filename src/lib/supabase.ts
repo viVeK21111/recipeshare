@@ -12,6 +12,9 @@ export interface User {
   name: string
   avatar_url?: string
   created_at: string
+  bio?: string          // Add this
+  location?: string     // Add this
+  website?: string 
 }
 
 export interface Recipe {
@@ -103,4 +106,70 @@ export function formatDateTime(dateString: string): string {
     minute: '2-digit',
     hour12: true
   })
+}
+
+export interface Friendship {
+  id: string
+  user_id: string
+  friend_id: string
+  status: 'pending' | 'accepted' | 'rejected'
+  created_at: string
+  updated_at: string
+}
+
+// Helper to get friendship status between two users
+export async function getFriendshipStatus(
+  userId: string, 
+  friendId: string
+): Promise<'none' | 'pending_sent' | 'pending_received' | 'friends'> {
+  try {
+    // Check if there's a friendship from user to friend
+    const { data: sentRequest } = await supabase
+      .from('friendships')
+      .select('status')
+      .eq('user_id', userId)
+      .eq('friend_id', friendId)
+      .maybeSingle()
+
+    if (sentRequest?.status === 'accepted') return 'friends'
+    if (sentRequest?.status === 'pending') return 'pending_sent'
+
+    // Check if there's a friendship from friend to user
+    const { data: receivedRequest } = await supabase
+      .from('friendships')
+      .select('status')
+      .eq('user_id', friendId)
+      .eq('friend_id', userId)
+      .maybeSingle()
+
+    if (receivedRequest?.status === 'accepted') return 'friends'
+    if (receivedRequest?.status === 'pending') return 'pending_received'
+
+    return 'none'
+  } catch (error) {
+    console.error('Error getting friendship status:', error)
+    return 'none'
+  }
+}
+
+// Get friends count
+export async function getFriendsCount(userId: string): Promise<number> {
+  try {
+    const { count: sentCount } = await supabase
+      .from('friendships')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('status', 'accepted')
+
+    const { count: receivedCount } = await supabase
+      .from('friendships')
+      .select('*', { count: 'exact', head: true })
+      .eq('friend_id', userId)
+      .eq('status', 'accepted')
+
+    return (sentCount || 0) + (receivedCount || 0)
+  } catch (error) {
+    console.error('Error getting friends count:', error)
+    return 0
+  }
 }

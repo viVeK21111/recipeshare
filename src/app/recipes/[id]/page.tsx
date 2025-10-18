@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
+import { CircleX } from 'lucide-react';
 import { useUser } from '@auth0/nextjs-auth0/client'
 import { supabase, Recipe, Comment } from '@/lib/supabase'
 import Header from '@/components/Header'
@@ -29,6 +30,13 @@ export default function RecipeDetail() {
   const [likesCount, setLikesCount] = useState(0)
   const [newComment, setNewComment] = useState('')
   const [submittingComment, setSubmittingComment] = useState(false)
+  const [showPopup, setShowPopup] = useState(false)
+
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(currentUrl)
+  }
 
   useEffect(() => {
     if (recipeId) {
@@ -236,12 +244,30 @@ export default function RecipeDetail() {
                   ) : (
                     <HeartIcon className="h-5 w-5 text-gray-600" />
                   )}
-                  <span className="font-medium">{likesCount}</span>
+                  <span className="font-medium text-black">{likesCount}</span>
                 </button>
                 
-                <button className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors">
-                  <ShareIcon className="h-5 w-5 text-gray-600" />
-                </button>
+                <button
+                onClick={() => setShowPopup(!showPopup)}
+                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+              >
+                <ShareIcon className="h-5 w-5 text-gray-600" />
+              </button>
+
+              {showPopup && (
+                <div className="absolute top-10 right-10 z-10 bg-white border border-gray-300 rounded-lg shadow-md p-3 w-64">
+                  <button onClick={() => setShowPopup(!showPopup)}>
+                  <CircleX size={15} className='text-black flex ml-auto'/>
+                  </button>
+                  <p className="text-sm text-gray-700 break-words">{currentUrl}</p>
+                  <button
+                    onClick={copyToClipboard}
+                    className="mt-2 px-3 py-1 text-sm bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors"
+                  >
+                    Copy Link
+                  </button>
+                </div>
+              )}
               </div>
             </div>
 
