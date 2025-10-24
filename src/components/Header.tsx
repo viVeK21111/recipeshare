@@ -91,7 +91,7 @@ export default function Header({ user }: HeaderProps) {
           </div>
 
           {/* User Menu */}
-          <div className="hidden md:block ml-auto">
+          <div className="block ml-auto">
             <div className="ml-4 flex items-center md:ml-6">
               {user ? (
                 <div className="flex items-center space-x-4">
@@ -105,7 +105,7 @@ export default function Header({ user }: HeaderProps) {
                  
                 </div>
               ) : (
-                <div className="flex items-center space-x-4">
+                <div className="flex hidden md:block items-center space-x-4">
                   <a
                     href="/api/auth/login"
                     className="text-gray-400 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
@@ -113,7 +113,7 @@ export default function Header({ user }: HeaderProps) {
                     Login
                   </a>
 
-                 <Link href="/contact" className="block px-4 py-2 text-sm text-gray-400 hover:text-orange-600">
+                 <Link href="/contact" className=" px-4 py-2 text-sm text-gray-400 hover:text-orange-600">
                    Contact Us
                  </Link>
                 </div>
@@ -189,9 +189,7 @@ export default function Header({ user }: HeaderProps) {
           <Link href="/my-recipes" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
             My Recipes
           </Link>
-          <Link href="/recipes/new" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
-            Add Recipe
-          </Link>
+         
           <Link href="/favorites" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
            Favorites
           </Link>
