@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useUser } from '@auth0/nextjs-auth0/client'
+import { SearchIcon } from 'lucide-react'
 import {
   Bars3Icon,
   XMarkIcon,
@@ -87,11 +88,21 @@ export default function Header({ user }: HeaderProps) {
                   Favorites
                 </Link>
               )}
+                {user && (
+                <Link
+                  href="/stories"
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActive('/stories') ? 'text-gray-900' : 'text-gray-500 hover:text-orange-600'
+                  }`}
+                >
+                  Stories
+                </Link>
+              )}
             </div>
           </div>
 
           {/* User Menu */}
-          <div className="block ml-auto">
+          <div className="block">
             <div className="ml-4 flex items-center md:ml-6">
               {user ? (
                 <div className="flex items-center space-x-4">
@@ -102,6 +113,8 @@ export default function Header({ user }: HeaderProps) {
                     <PlusIcon className="h-4 w-4 mr-2" />
                     Add Recipe
                   </Link>
+                
+
                  
                 </div>
               ) : (
@@ -122,11 +135,20 @@ export default function Header({ user }: HeaderProps) {
           </div>
 
           {user && (
-          
-             <div className="relative hidden md:block ml-auto" ref={profileRef}>
+          <>
+             <div className="flex relative ml-auto" >
+                <Link
+                    href="/search"
+                    className="inline-flex items-center mr-3 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-black bg-gray-300 hover:bg-gray-400 transition-colors"
+                  >
+                    <SearchIcon className="h-4 w-4 md:mr-2" />
+                    <p className="hidden md:block">Search</p>
+                  </Link>
+              </div>
+              <div ref={profileRef}>
              <button
                onClick={() => setProfileOpen(!profileOpen)}
-               className="flex items-center hover:cursor-pointer space-x-2 focus:outline-none"
+               className="hidden md:flex items-center hover:cursor-pointer space-x-2 focus:outline-none"
              >
                <img
                  className="h-8 w-8 rounded-full"
@@ -156,6 +178,7 @@ export default function Header({ user }: HeaderProps) {
                </div>
              )}
            </div>
+           </>
           )}
           
 
@@ -192,6 +215,9 @@ export default function Header({ user }: HeaderProps) {
          
           <Link href="/favorites" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
            Favorites
+          </Link>
+          <Link href="/stories" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
+           Stories
           </Link>
 
          {/* Profile Toggle Button */}

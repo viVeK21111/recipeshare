@@ -235,7 +235,7 @@ export default function ContactPage() {
                   <div>
                     <p className="font-semibold text-gray-900">Email</p>
                     <a href="mailto:support@recipeeshare.com" className="text-orange-600 hover:text-orange-700">
-                      support@recipeshare.com
+                      vivekvemula23@gmail.com
                     </a>
                   </div>
                 </div>
@@ -267,7 +267,7 @@ export default function ContactPage() {
             <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl border border-orange-200 p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-2">Join Our Community</h3>
               <p className="text-gray-700 text-sm mb-4">
-                RecipeShare is built on sharing and learning. We're here to help you get the most out of our platform!
+                 Coming soon...
               </p>
               {!user && (
                 <a
