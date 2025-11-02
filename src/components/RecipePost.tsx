@@ -324,8 +324,13 @@ export default function RecipePost({ recipe }: RecipePostProps) {
           />
         </div>
       ) : (
-        <div className="w-full h-80 bg-gradient-to-br from-orange-100 via-red-50 to-orange-100 flex items-center justify-center">
-          <div className="text-8xl">🍽️</div>
+        <div className="w-full h-80 relative">
+          <Image
+            src="/default.jpg"
+            alt={recipe.title}
+            fill
+            className="object-cover"
+          />
         </div>
       )}
 

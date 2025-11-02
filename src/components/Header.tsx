@@ -56,7 +56,7 @@ export default function Header({ user }: HeaderProps) {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block ">
+          <div className="hidden lg:block ">
             <div className="ml-10 flex items-baseline space-x-4">
               {user && (
                  <Link
@@ -118,7 +118,7 @@ export default function Header({ user }: HeaderProps) {
                  
                 </div>
               ) : (
-                <div className="flex hidden md:block items-center space-x-4">
+                <div className="flex hidden lg:block items-center space-x-4">
                   <a
                     href="/api/auth/login"
                     className="text-gray-400 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
@@ -148,7 +148,7 @@ export default function Header({ user }: HeaderProps) {
               <div ref={profileRef}>
              <button
                onClick={() => setProfileOpen(!profileOpen)}
-               className="hidden md:flex items-center hover:cursor-pointer space-x-2 focus:outline-none"
+               className="hidden lg:flex items-center hover:cursor-pointer space-x-2 focus:outline-none"
              >
                <img
                  className="h-8 w-8 rounded-full"
@@ -183,7 +183,7 @@ export default function Header({ user }: HeaderProps) {
           
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden ml-auto">
+          <div className="lg:hidden ml-auto">
             <button
               type="button"
               className={`${user ? 'bg-white' : 'bg-black'}  inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 `}
@@ -201,7 +201,7 @@ export default function Header({ user }: HeaderProps) {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-  <div className="md:hidden">
+  <div className="lg:hidden">
     <div className={`${user ? 'bg-white' : 'bg-black'} px-2 pt-2 mt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-500`}>
     
       {user && (

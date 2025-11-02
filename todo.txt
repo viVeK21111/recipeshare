@@ -1,8 +1,19 @@
 ﻿
 recipes page ui/ux edit
 /settings page
+ - delete account
+ - preferences
 changable user profile pic
-name selection for site
-logo design
+red dot on profile for friend new request
 
 
+when many users:
+
+search user
+private and public accounts
+following posts
+stories 
+recent recipes for new users
+best recipes page public 
+verifying whether pics are cooking ones or not
+messages

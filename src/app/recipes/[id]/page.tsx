@@ -213,15 +213,15 @@ export default function RecipeDetail() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Recipe Header */}
         <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
-          {recipe.image_url && (
+         
             <div className="relative h-64 md:h-96 w-full">
               <img
-                src={recipe.image_url}
+                src={recipe.image_url || '/default.jpg'}
                 alt={recipe.title}
                 className="w-full h-full object-cover"
               />
             </div>
-          )}
+          
           
           <div className="p-6 md:p-8">
             <div className="flex items-start justify-between mb-4">

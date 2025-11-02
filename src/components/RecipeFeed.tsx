@@ -6,12 +6,12 @@ import RecipePost from './RecipePost'
 import LoadingSpinner from './LoadingSpinner'
 
 interface RecipeFeedProps {
-  countryFilter: string
+  countryFilters: string[] // Changed from string to string[]
 }
 
 const RECIPES_PER_PAGE = 20
 
-export default function RecipeFeed({ countryFilter }: RecipeFeedProps) {
+export default function RecipeFeed({ countryFilters }: RecipeFeedProps) {
   const [recipes, setRecipes] = useState<Recipe[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -19,8 +19,8 @@ export default function RecipeFeed({ countryFilter }: RecipeFeedProps) {
 
   useEffect(() => {
     fetchRecipes()
-    setDisplayCount(RECIPES_PER_PAGE) // Reset display count when filter changes
-  }, [countryFilter])
+    setDisplayCount(RECIPES_PER_PAGE)
+  }, [countryFilters])
 
   const fetchRecipes = async () => {
     try {
@@ -37,8 +37,9 @@ export default function RecipeFeed({ countryFilter }: RecipeFeedProps) {
         `)
         .order('created_at', { ascending: false })
 
-      if (countryFilter !== 'all') {
-        query = query.eq('country', countryFilter)
+      // Apply country filter
+      if (countryFilters.length > 0) {
+        query = query.in('country', countryFilters)
       }
 
       const { data, error } = await query
@@ -47,11 +48,10 @@ export default function RecipeFeed({ countryFilter }: RecipeFeedProps) {
         throw error
       }
 
-      // Transform the data to match our Recipe interface
       const transformedRecipes = data?.map(recipe => ({
         ...recipe,
         likes_count: recipe.likes_count?.[0]?.count || 0,
-        comments_count: recipe.comments_count?.[0]?.count || 0
+        comments_count: recipe.comments_count?.[0]?.count || 0,
       })) || []
 
       setRecipes(transformedRecipes)
@@ -94,9 +94,9 @@ export default function RecipeFeed({ countryFilter }: RecipeFeedProps) {
         <div className="text-6xl mb-4">🍽️</div>
         <h3 className="text-xl font-semibold text-gray-900 mb-2">No recipes found</h3>
         <p className="text-gray-600">
-          {countryFilter === 'all' 
-            ? 'Be the first to share a recipe!'
-            : 'No recipes from this country yet. Try selecting a different country.'}
+          {countryFilters.length > 0
+            ? 'No recipes from selected countries. Try selecting different countries.'
+            : 'Be the first to share a recipe!'}
         </p>
       </div>
     )

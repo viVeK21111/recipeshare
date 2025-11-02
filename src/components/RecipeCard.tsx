@@ -85,19 +85,27 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
       <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 group-hover:border-orange-200">
         {/* Recipe Image */}
         <div className="relative h-48 w-full overflow-hidden">
+          {/* Recipe Image */}
           {recipe.image_url ? (
-            <Image
-              src={recipe.image_url}
-              alt={recipe.title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-            />
+            <div className="w-full h-80 relative">
+              <Image
+                src={recipe.image_url}
+                alt={recipe.title}
+                fill
+                className="object-cover"
+              />
+            </div>
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-orange-100 to-red-100 flex items-center justify-center">
-              <div className="text-6xl">🍽️</div>
+            <div className="w-full h-80 relative">
+              <Image
+                src="/default.jpg"
+                alt={recipe.title}
+                fill
+                className="object-cover"
+              />
             </div>
           )}
-          
+                    
           {/* Country Badge */}
           <div className="absolute top-3 left-3 bg-white bg-opacity-90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1 text-sm font-medium text-gray-700">
             <span className="text-lg">{getCountryFlag(recipe.country)}</span>
