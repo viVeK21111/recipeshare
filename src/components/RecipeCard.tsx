@@ -149,26 +149,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
 
           {/* Author and Engagement */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              {recipe.user?.avatar_url ? (
-                <Image
-                  src={recipe.user.avatar_url}
-                  alt={recipe.user.name}
-                  width={24}
-                  height={24}
-                  className="rounded-full"
-                />
-              ) : (
-                <div className="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-medium text-gray-600">
-                    {recipe.user?.name?.charAt(0) || 'U'}
-                  </span>
-                </div>
-              )}
-              <span className="text-sm font-medium text-gray-700">
-                {recipe.user?.name || 'Anonymous'}
-              </span>
-            </div>
+           
 
             <div className="flex items-center space-x-3 text-sm text-gray-500">
               <div className="flex items-center space-x-1">

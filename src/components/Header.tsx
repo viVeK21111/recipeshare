@@ -150,12 +150,12 @@ export default function Header({ user }: HeaderProps) {
                onClick={() => setProfileOpen(!profileOpen)}
                className="hidden lg:flex items-center hover:cursor-pointer space-x-2 focus:outline-none"
              >
-                    {user?.avatar_url ? (
+                     {user?.picture ? (
                 <img
-                  src={user.avatar_url}
+                  src={user.picture}
                   alt={user.name || 'User'}
-                  width={40}
-                  height={40}
+                  width={30}
+                  height={30}
                   className="rounded-full"
                 />
               ) : (
@@ -246,13 +246,13 @@ export default function Header({ user }: HeaderProps) {
   <img
     src={user.picture}
     alt={user.name || 'User'}
-    width={40}
-    height={40}
+    width={30}
+    height={30}
     className="rounded-full"
   />
 ) : (
   <img
-    src="/defaultu.jpg"
+    src="/defaultU.png"
     alt={user?.name || 'User'}
     width={40}
     height={40}
