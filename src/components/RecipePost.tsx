@@ -38,6 +38,7 @@ const COUNTRY_INFO: { [key: string]: { flag: string; name: string } } = {
   'tr': { flag: '🇹🇷', name: 'Turkey' },
   'de': { flag: '🇩🇪', name: 'Germany' },
   'gb': { flag: '🇬🇧', name: 'United Kingdom' },
+  'au': {flag: '🇦🇺', name: 'Australia'},
 }
 
 export default function RecipePost({ recipe }: RecipePostProps) {
@@ -269,24 +270,27 @@ export default function RecipePost({ recipe }: RecipePostProps) {
         }}
         className="flex items-center hover:cursor-pointer space-x-3 hover:opacity-80 transition-opacity"
       >
-        {recipe.user?.avatar_url ? (
-          <Image
-            src={recipe.user.avatar_url}
-            alt={recipe.user.name}
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-        ) : (
-          <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-400 rounded-full flex items-center justify-center">
-            <span className="text-white font-semibold text-sm">
-              {recipe.user?.name?.charAt(0) || 'U'}
-            </span>
-          </div>
-        )}
+        {/* In Post Header */}
+          {recipe.user?.avatar_url ? (
+            <img
+              src={recipe.user.avatar_url}
+              alt={recipe.user.name}
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+          ) : (
+            <img
+              src="/defaultU.png"
+              alt={recipe.user?.name || 'User'}
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+          )}
         <div className="text-left">
           <p className="font-semibold text-gray-900">
-            {recipe.user?.name || 'Anonymous'}
+          {recipe.user?.name === recipe.user?.email ?  recipe.user?.name.split('@')[0] : recipe.user?.name.split('@')[0]}
           </p>
           <div className="flex items-center space-x-2 text-xs text-gray-500">
             <span>{countryInfo.flag} {countryInfo.name}</span>

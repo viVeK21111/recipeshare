@@ -25,6 +25,7 @@ const COUNTRIES: Country[] = [
   { code: 'tr', name: 'Turkey', flag: '🇹🇷' },
   { code: 'de', name: 'Germany', flag: '🇩🇪' },
   { code: 'gb', name: 'United Kingdom', flag: '🇬🇧' },
+  { code: 'au', name: 'Australia', flag: '🇦🇺' },
 ]
 
 interface CountryFilterProps {

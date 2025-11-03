@@ -221,8 +221,8 @@ export default function UserProfilePage() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
           <div className="flex items-start justify-between">
             <div className="md:flex items-center space-x-6">
-              {profileUser.avatar_url ? (
-                <Image
+            {profileUser.avatar_url ? (
+                <img
                   src={profileUser.avatar_url}
                   alt={profileUser.name}
                   width={120}
@@ -230,16 +230,18 @@ export default function UserProfilePage() {
                   className="rounded-full"
                 />
               ) : (
-                <div className=" bg-gradient-to-br from-orange-400 to-red-400 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-4xl">
-                    {profileUser.name?.charAt(0) || 'U'}
-                  </span>
-                </div>
+                <img
+                  src="/defaultU.png"
+                  alt={profileUser.name}
+                  width={120}
+                  height={120}
+                  className="rounded-full"
+                />
               )}
               
               <div className="flex-1">
                 <h1 className="text-2xl md:text-3xl mt-2 md:mt-0 font-bold text-gray-900 mb-2">
-                  {profileUser.name}
+                {profileUser.name === profileUser.email ?  profileUser.name.split('@')[0] : profileUser.name}
                 </h1>
                 
                 {profileUser.bio && (

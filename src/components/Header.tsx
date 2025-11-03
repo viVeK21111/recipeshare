@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useUser } from '@auth0/nextjs-auth0/client'
-import { SearchIcon } from 'lucide-react'
+import { SearchIcon,MessageCircleMore } from 'lucide-react'
 import {
   Bars3Icon,
   XMarkIcon,
@@ -38,6 +38,9 @@ export default function Header({ user }: HeaderProps) {
     }
   }, [])
 
+ 
+  
+
   return (
     <header className={user ? `bg-white border-b shadow-sm border-gray-200` : `bg-black`}>
       <nav className="max-w-full px-6">
@@ -68,24 +71,15 @@ export default function Header({ user }: HeaderProps) {
                  Home
                </Link>
               )}
-              {user && (
-                <Link
-                  href="/my-recipes"
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    isActive('/my-recipes') ? 'text-gray-900' : 'text-gray-500 hover:text-orange-600'
-                  }`}
-                >
-                  My Recipes
-                </Link>
-              )}
+             
                {user && (
                 <Link
-                  href="/favorites"
+                  href="/best-recipes"
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    isActive('/favorites') ? 'text-gray-900' : 'text-gray-500 hover:text-orange-600'
+                    isActive('/best-recipes') ? 'text-gray-900' : 'text-gray-500 hover:text-orange-600'
                   }`}
                 >
-                  Favorites
+                  Best Recipes
                 </Link>
               )}
                 {user && (
@@ -102,10 +96,10 @@ export default function Header({ user }: HeaderProps) {
           </div>
 
           {/* User Menu */}
-          <div className="block">
-            <div className="ml-4 flex items-center md:ml-6">
+          <div className={user ? 'block' : 'ml-auto block'}>
+            <div className="ml-10 md:ml-6 flex items-center">
               {user ? (
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-6">
                   <Link
                     href="/recipes/new"
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 transition-colors"
@@ -139,10 +133,16 @@ export default function Header({ user }: HeaderProps) {
              <div className="flex relative ml-auto" >
                 <Link
                     href="/search"
-                    className="inline-flex items-center mr-3 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-black bg-gray-300 hover:bg-gray-400 transition-colors"
+                    className="inline-flex items-center mr-3 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-300 hover:bg-gray-400 transition-colors"
                   >
                     <SearchIcon className="h-4 w-4 md:mr-2" />
                     <p className="hidden md:block">Search</p>
+                  </Link>
+                  <Link
+                  className='hidden lg:flex items-center text-black p-2'
+                    href="/chat"
+                  >
+                    <MessageCircleMore className=" md:mr-2" />
                   </Link>
               </div>
               <div ref={profileRef}>
@@ -150,12 +150,24 @@ export default function Header({ user }: HeaderProps) {
                onClick={() => setProfileOpen(!profileOpen)}
                className="hidden lg:flex items-center hover:cursor-pointer space-x-2 focus:outline-none"
              >
-               <img
-                 className="h-8 w-8 rounded-full"
-                 src={user.picture || '/default-avatar.png'}
-                 alt={user.name}
-               />
-               <span className="text-sm font-medium text-gray-700">{user.name}</span>
+                    {user?.avatar_url ? (
+                <img
+                  src={user.avatar_url}
+                  alt={user.name || 'User'}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              ) : (
+                <img
+                  src="/defaultU.png"
+                  alt={user?.name || 'User'}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              )}
+               <span className="text-sm font-medium text-gray-700"> {user.name === user.email ?  user.name.split('@')[0] : user.name}</span>
              </button>
 
              {profileOpen && (
@@ -163,8 +175,12 @@ export default function Header({ user }: HeaderProps) {
                 <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                    Profile
                  </Link>
+                 
                  <Link href="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                    Settings
+                 </Link>
+                 <Link href="/favorites" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                   Favorites
                  </Link>
                  <Link href="/contact" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                    Contact Us
@@ -209,15 +225,16 @@ export default function Header({ user }: HeaderProps) {
           <Link href="/recipes" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500">
         Home
       </Link>
-          <Link href="/my-recipes" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
-            My Recipes
-          </Link>
          
-          <Link href="/favorites" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
-           Favorites
+         
+          <Link href="/best-recipes" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
+           Best Recipes
           </Link>
           <Link href="/stories" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
            Stories
+          </Link>
+          <Link href="/chat" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
+           Chat
           </Link>
 
          {/* Profile Toggle Button */}
@@ -225,14 +242,26 @@ export default function Header({ user }: HeaderProps) {
           onClick={() => setMobileProfileOpen(!mobileProfileOpen)}
           className="flex items-center px-3 py-2 cursor-pointer"
         >
-          <img
-            className="h-8 w-8 rounded-full"
-            src={user.picture || '/default-avatar.png'}
-            alt={user.name}
-          />
+          {user?.picture ? (
+  <img
+    src={user.picture}
+    alt={user.name || 'User'}
+    width={40}
+    height={40}
+    className="rounded-full"
+  />
+) : (
+  <img
+    src="/defaultu.jpg"
+    alt={user?.name || 'User'}
+    width={40}
+    height={40}
+    className="rounded-full"
+  />
+)}
           <div className="ml-3 flex items-center space-x-1">
             <div>
-              <div className="text-base font-medium text-gray-800">{user.name}</div>
+              <div className="text-base font-medium text-gray-800"> {user.name === user.email ?  user.name.split('@')[0] : user.name}</div>
             </div>
             <svg
               className={`h-4 w-4 text-gray-500 transform transition-transform ${
@@ -252,8 +281,12 @@ export default function Header({ user }: HeaderProps) {
            <Link href="/profile" className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-orange-600">
             Profile
           </Link>
+          
           <Link href="/settings" className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-orange-600">
             Settings
+          </Link>
+          <Link href="/favorites" className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-orange-600">
+            Favorites
           </Link>
           <Link href="/contact" className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-orange-600">
             Contact Us

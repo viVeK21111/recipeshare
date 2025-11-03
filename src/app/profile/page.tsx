@@ -6,6 +6,7 @@ import { useUser } from '@auth0/nextjs-auth0/client'
 import { supabase, Recipe, User as UserType, getFriendsCount } from '@/lib/supabase'
 import Header from '@/components/Header'
 import RecipeCard from '@/components/RecipeCard'
+import MyRecipeCard from '@/components/MyRecipeCard'
 import { 
   PencilIcon,
   MapPinIcon,
@@ -32,6 +33,42 @@ export default function MyProfilePage() {
     website: ''
   })
   const [pendingRequests, setPendingRequests] = useState<UserType[]>([])
+
+  const handleDeleteRecipe = async (recipeId: string) => {
+    try {
+      // Delete associated likes first
+      await supabase
+        .from('likes')
+        .delete()
+        .eq('recipe_id', recipeId)
+
+      // Delete associated comments
+      await supabase
+        .from('comments')
+        .delete()
+        .eq('recipe_id', recipeId)
+
+      // Delete the recipe
+      const { error } = await supabase
+        .from('recipes')
+        .delete()
+        .eq('id', recipeId)
+
+      if (error) {
+        throw error
+      }
+
+      // Remove from local state
+      setRecipes(prev => prev.filter(r => r.id !== recipeId))
+      
+      // Show success message (optional - you can use a toast library)
+      alert('Recipe deleted successfully!')
+    } catch (error) {
+      console.error('Error deleting recipe:', error)
+      alert('Failed to delete recipe. Please try again.')
+    }
+  }
+
 
   // Add this inside fetchMyProfile or as a separate function
   const fetchPendingRequests = async () => {
@@ -267,25 +304,28 @@ export default function MyProfilePage() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
           <div className="md:flex items-start justify-between mb-6">
             <div className="flex items-center space-x-6">
-              {profileUser.avatar_url ? (
-                <Image
-                  src={profileUser.avatar_url}
-                  alt={profileUser.name}
-                  width={120}
-                  height={120}
-                  className="rounded-full"
-                />
-              ) : (
-                <div className="w-28 h-28 bg-gradient-to-br from-orange-400 to-red-400 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-4xl">
-                    {profileUser.name?.charAt(0) || 'U'}
-                  </span>
-                </div>
-              )}
+             {/* Profile Header */}
+          {profileUser.avatar_url ? (
+            <img
+              src={profileUser.avatar_url}
+              alt={profileUser.name}
+              width={120}
+              height={120}
+              className="rounded-full"
+            />
+          ) : (
+            <img
+              src="/defaultU.png"
+              alt={profileUser.name}
+              width={120}
+              height={120}
+              className="rounded-full"
+            />
+          )}
               
               <div>
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  {profileUser.name}
+                  {profileUser.name === profileUser.email ?  profileUser.name.split('@')[0] : profileUser.name}
                 </h1>
                 <p className="text-gray-600">{profileUser.email}</p>
               </div>
@@ -405,23 +445,26 @@ export default function MyProfilePage() {
           className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
         >
           <div className="flex items-center space-x-3">
-            {requester.avatar_url ? (
-              <Image
-                src={requester.avatar_url}
-                alt={requester.name}
-                width={48}
-                height={48}
-                className="rounded-full"
-              />
-            ) : (
-              <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-400 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold">
-                  {requester.name?.charAt(0) || 'U'}
-                </span>
-              </div>
-            )}
+           {/* In Friends List */}
+          {requester.avatar_url ? (
+            <img
+              src={requester.avatar_url}
+              alt={requester.name}
+              width={60}
+              height={60}
+              className="rounded-full"
+            />
+          ) : (
+            <img
+              src="/defaultU.png"
+              alt={requester.name}
+              width={60}
+              height={60}
+              className="rounded-full"
+            />
+          )}
             <div>
-              <p className="font-semibold text-gray-900">{requester.name}</p>
+              <p className="font-semibold text-gray-900"> {requester.name === requester.email ?  requester.name.split('@')[0] : requester.name}</p>
               <p className="text-sm text-gray-600">wants to be friends</p>
             </div>
           </div>
@@ -474,15 +517,19 @@ export default function MyProfilePage() {
           <div>
             {recipes.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recipes.map((recipe) => (
-                  <RecipeCard key={recipe.id} recipe={recipe} />
+                 {recipes.map((r) => (
+                  <MyRecipeCard 
+                    key={r.id} 
+                    recipe={r} 
+                    onDelete={handleDeleteRecipe}
+                  />
                 ))}
               </div>
             ) : (
               <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
                 <p className="text-gray-500 mb-4">No recipes yet</p>
                 <Link
-                  href="/recipes/create"
+                  href="/recipes/new"
                   className="inline-block px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors"
                 >
                   Create Your First Recipe
@@ -503,23 +550,26 @@ export default function MyProfilePage() {
                     className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-center space-x-4">
-                      {friend.avatar_url ? (
-                        <Image
-                          src={friend.avatar_url}
-                          alt={friend.name}
-                          width={60}
-                          height={60}
-                          className="rounded-full"
-                        />
-                      ) : (
-                        <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-400 rounded-full flex items-center justify-center">
-                          <span className="text-white font-bold text-xl">
-                            {friend.name?.charAt(0) || 'U'}
-                          </span>
-                        </div>
-                      )}
+                      {/* In Friends List */}
+                  {friend.avatar_url ? (
+                    <img
+                      src={friend.avatar_url}
+                      alt={friend.name}
+                      width={60}
+                      height={60}
+                      className="rounded-full"
+                    />
+                  ) : (
+                    <img
+                      src="/defaultU.png"
+                      alt={friend.name}
+                      width={60}
+                      height={60}
+                      className="rounded-full"
+                    />
+                  )}
                       <div>
-                        <h3 className="font-semibold text-gray-900">{friend.name}</h3>
+                        <h3 className="font-semibold text-gray-900"> {friend.name === friend.email ?  friend.name.split('@')[0] : friend.name}</h3>
                         {friend.bio && (
                           <p className="text-sm text-gray-600 line-clamp-2 mt-1">
                             {friend.bio}

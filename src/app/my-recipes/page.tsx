@@ -138,7 +138,7 @@ export default function MyRecipesPage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">No recipes yet</h3>
                 <p className="text-gray-600 mb-6">Start sharing your favorite recipes with the world!</p>
                 <a
-                  href="/recipes/create"
+                  href="/recipes/new"
                   className="inline-block px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors"
                 >
                   Create Your First Recipe
