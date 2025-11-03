@@ -305,12 +305,13 @@ export default function RecipeDetail() {
               ) : (
                 <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
                   <span className="text-sm font-medium text-gray-600">
-                    {recipe.user?.name?.charAt(0) || 'U'}
+                    {recipe.user?.name === recipe.user?.email ? recipe.user?.name.split('@')[0] : recipe.user?.name.split('@')[0]}
                   </span>
                 </div>
               )}
               <div>
-                <p className="font-medium text-gray-900">{recipe.user?.name || 'Anonymous'}</p>
+                <p className="font-medium text-gray-900">{recipe.user?.name === recipe.user?.email ? recipe.user?.name.split('@')[0] : recipe.user?.name.split('@')[0]}
+                </p>
                 <p className="text-sm text-gray-500">
                   {new Date(recipe.created_at).toLocaleDateString()}
                 </p>
