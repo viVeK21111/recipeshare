@@ -97,7 +97,7 @@ export default function Header({ user }: HeaderProps) {
 
           {/* User Menu */}
           <div className={user ? 'block' : 'ml-auto block'}>
-            <div className="ml-10 md:ml-6 flex items-center">
+            <div className="ml-6 m-1 flex items-center">
               {user ? (
                 <div className="flex items-center space-x-6">
                   <Link
@@ -105,7 +105,7 @@ export default function Header({ user }: HeaderProps) {
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700 transition-colors"
                   >
                     <PlusIcon className="h-4 w-4 mr-2" />
-                    Add Recipe
+                    Add <p className='hidden md:flex ml-1'>Recipe</p>
                   </Link>
                 
 
@@ -133,13 +133,13 @@ export default function Header({ user }: HeaderProps) {
              <div className="flex relative ml-auto" >
                 <Link
                     href="/search"
-                    className="inline-flex items-center mr-3 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-300 hover:bg-gray-400 transition-colors"
+                    className="inline-flex items-center md:mr-3 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 hover:text-orange-600 transition-colors"
                   >
                     <SearchIcon className="h-4 w-4 md:mr-2" />
                     <p className="hidden md:block">Search</p>
                   </Link>
                   <Link
-                  className='hidden lg:flex items-center text-black p-2'
+                  className='hidden lg:flex items-center hover:text-orange-600 text-gray-800 p-2'
                     href="/chat"
                   >
                     <MessageCircleMore className=" md:mr-2" />
