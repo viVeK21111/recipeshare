@@ -1,5 +1,10 @@
 ﻿
-recipes page ui/ux edit
+scroll position maintain after coming back from recipe
+add more filter 
+  - category wise recipes ( breakfast,brunch,lunch,dinner,snacks - veg and non veg)
+  - gluten free
+  - soups or drinks
+  - desserts
 /settings page
  - delete account
  - preferences
@@ -7,7 +12,7 @@ changable user profile pic
 red dot on profile for friend new request
 down navbar for mobile screens
 dark mode
-category wise recipes ( breakfast,brunch,lunch,dinner,snacks - veg and non veg)
+
 
 
 when many users:

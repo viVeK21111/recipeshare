@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Recipe, supabase, formatDateTime } from '@/lib/supabase'
 import { useUser } from '@auth0/nextjs-auth0/client'
+import {CookingPot} from 'lucide-react'
 import { 
   HeartIcon, 
   ChatBubbleLeftIcon, 
@@ -361,6 +362,9 @@ export default function RecipePost({ recipe }: RecipePostProps) {
               {recipe.comments_count || 0}
             </span>
           </button>
+        </div>
+        <div className='ml-auto text-gray-500 flex items-center'>
+          <CookingPot size={15} className='mr-1 '/> {recipe.type}
         </div>
       </div>
 

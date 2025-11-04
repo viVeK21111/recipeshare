@@ -103,8 +103,8 @@ export default function RecipeFeed({ countryFilters }: RecipeFeedProps) {
   }
 
   return (
-    <div>
-      <div className="max-w-2xl mx-auto">
+    <div className='ml-auto'>
+      <div className="max-w-2xl">
         {displayedRecipes.map((recipe) => (
           <RecipePost key={recipe.id} recipe={recipe} />
         ))}
@@ -121,11 +121,7 @@ export default function RecipeFeed({ countryFilters }: RecipeFeedProps) {
         </div>
       )}
 
-      {!hasMore && recipes.length > 0 && (
-        <div className="text-center py-8 text-gray-500">
-          You've reached the end! 🎉
-        </div>
-      )}
+      
     </div>
   )
 }

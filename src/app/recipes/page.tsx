@@ -11,28 +11,41 @@ export default function RecipesPage() {
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    // Full-viewport column layout; lets inner areas control scrolling
+    <div className="md:h-screen bg-gray-50 flex flex-col">
+      {/* Top site header (not changed) */}
       <Header user={user} />
-      <main>
-        <div className="max-w-full mx-auto px-4  py-8">
-          {/* Header with Filter on Right */}
-          <div className="mb-8 md:flex items-start justify-between gap-4">
-            <div className='md:mx-5'>
+
+      {/* Main area: column on mobile, split on md+; min-h-0 allows overflow-auto children */}
+      <main className="flex-1 min-h-0 md:flex md:overflow-hidden">
+        {/* Sidebar / Filters:
+            - Mobile: full width at top, sticky under the Header
+            - Desktop: left column, sticky */}
+        <aside className="w-full md:w-80 lg:w-96 md:border-r border-gray-200 bg-white">
+          {/* Sticky container – mobile sticks to top-0; desktop sticks within its column */}
+          <div className="sticky top-0 md:top-0 z-20 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 border-b md:border-b-0">
+            <div className="p-4 md:p-5">
               <h1 className="text-3xl font-bold text-gray-900 mb-1">Recipe Feed</h1>
               <p className="text-gray-600">Discover and share amazing recipes from around the world</p>
-            </div>
-            
-            {/* Country Filter on Right */}
-            <div className="flex-shrink-0 mt-3 md:mt-0">
-              <CountryFilter 
-                selectedCountries={selectedCountries}
-                onCountriesChange={setSelectedCountries}
-              />
+
+              <div className="mt-4">
+                <CountryFilter
+                  selectedCountries={selectedCountries}
+                  onCountriesChange={setSelectedCountries}
+                />
+              </div>
             </div>
           </div>
+        </aside>
 
-          <RecipeFeed countryFilters={selectedCountries} />
-        </div>
+        {/* Feed:
+            - Mobile: appears below filters and page scrolls naturally
+            - Desktop: only the feed scrolls independently */}
+        <section className="flex-1 p-4 md:p-6 overflow-visible md:overflow-auto">
+          <div className="max-w-4xl mx-auto">
+            <RecipeFeed countryFilters={selectedCountries} />
+          </div>
+        </section>
       </main>
     </div>
   )

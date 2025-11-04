@@ -224,17 +224,18 @@ export default function RecipeDetail() {
           
           
           <div className="p-6 md:p-8">
-            <div className="flex items-start justify-between mb-4">
+            <div className="flex-1 md:flex items-start justify-between mb-4">
               <div className="flex-1">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
                   {recipe.title}
                 </h1>
-                <p className="text-lg text-gray-600 mb-4">
+                <p className="md:text-lg text-gray-600">
                   {recipe.description}
                 </p>
+                <p className='my-2 text-gray-500'>Best served for {recipe.type}</p>
               </div>
               
-              <div className="flex items-center space-x-2 ml-4">
+              <div className="flex items-center space-x-2 md:ml-4">
                 <button
                   onClick={handleLike}
                   className="flex items-center space-x-2 px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"

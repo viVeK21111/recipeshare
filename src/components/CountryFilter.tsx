@@ -82,7 +82,7 @@ export default function CountryFilter({ selectedCountries, onCountriesChange }: 
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full md:w-auto min-w-[300px] bg-white rounded-lg shadow-sm border border-gray-200 p-4 flex items-center justify-between hover:border-orange-300 transition-colors"
+        className="w-full md:w-auto min-w-[250px] bg-white rounded-lg shadow-sm border border-gray-200 p-3 flex items-center justify-between hover:border-orange-300 transition-colors"
       >
         <div className="flex items-center space-x-3">
           <MapPinIcon className="h-5 w-5 text-gray-600" />
