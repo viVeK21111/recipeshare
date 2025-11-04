@@ -7,7 +7,7 @@ changable user profile pic
 red dot on profile for friend new request
 down navbar for mobile screens
 dark mode
-category wise recipes
+category wise recipes ( breakfast,brunch,lunch,dinner,snacks - veg and non veg)
 
 
 when many users:
@@ -16,9 +16,12 @@ search user or recipes
 private and public accounts
 following posts
 stories 
+recipe of the day
 recent recipes for new users
 best recipes page public 
 verifying whether pics are cooking ones or not
 messages with persons
 communities
 verified profiles blue mark
+ebook recipes
+subscirption to veiw premium recipes

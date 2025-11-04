@@ -42,7 +42,7 @@ export default function Header({ user }: HeaderProps) {
   
 
   return (
-    <header className={user ? `bg-white border-b shadow-sm border-gray-200` : `bg-black`}>
+    <header className={user ? `sticky top-0 z-50 bg-white border-b shadow-sm border-gray-200 ` : `sticky top-0 z-50 bg-black`}>
       <nav className="max-w-full px-6">
         <div className="flex  items-center h-16">
 
