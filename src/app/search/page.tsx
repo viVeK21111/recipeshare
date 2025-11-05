@@ -193,16 +193,17 @@ export default function SearchPage() {
                       >
                         <div className="flex items-center space-x-4">
                           {foundUser.avatar_url ? (
-                            <Image
+                            <img
                               src={foundUser.avatar_url}
                               alt={foundUser.name}
                               width={60}
                               height={60}
                               className="rounded-full"
+                              onError={(e) => (e.currentTarget.src = '/defaultU.png')}
                             />
                           ) : (
-                            <Image
-                              src="/defaultu.jpg"
+                            <img
+                              src="/defaultU.png"
                               alt={foundUser.name}
                               width={60}
                               height={60}
@@ -211,9 +212,8 @@ export default function SearchPage() {
                           )}
                           <div className="flex-1">
                             <h3 className="font-semibold text-gray-900 text-lg">
-                              {foundUser.name}
+                              {foundUser.name.split('@')[0]}
                             </h3>
-                            <p className="text-sm text-gray-600">{foundUser.email}</p>
                             {foundUser.bio && (
                               <p className="text-sm text-gray-500 mt-1 line-clamp-2">
                                 {foundUser.bio}
@@ -299,7 +299,7 @@ export default function SearchPage() {
                                 />
                               ) : (
                                 <Image
-                                  src="/defaultu.jpg"
+                                  src="/defaultU.png"
                                   alt={recipe.user?.name || 'User'}
                                   width={24}
                                   height={24}
