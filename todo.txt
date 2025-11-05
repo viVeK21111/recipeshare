@@ -1,7 +1,6 @@
 ﻿
 scroll position maintain after coming back from recipe
 add more filter 
-  - category wise recipes ( breakfast,brunch,lunch,dinner,snacks - veg and non veg)
   - gluten free
   - soups or drinks
   - desserts

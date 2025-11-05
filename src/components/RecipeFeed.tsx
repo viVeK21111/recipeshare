@@ -7,11 +7,13 @@ import LoadingSpinner from './LoadingSpinner'
 
 interface RecipeFeedProps {
   countryFilters: string[] // Changed from string to string[]
+  typeFilters: string[]
+  vtypeFilters: String[]
 }
 
 const RECIPES_PER_PAGE = 20
 
-export default function RecipeFeed({ countryFilters }: RecipeFeedProps) {
+export default function RecipeFeed({ countryFilters,typeFilters,vtypeFilters }: RecipeFeedProps) {
   const [recipes, setRecipes] = useState<Recipe[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -20,7 +22,7 @@ export default function RecipeFeed({ countryFilters }: RecipeFeedProps) {
   useEffect(() => {
     fetchRecipes()
     setDisplayCount(RECIPES_PER_PAGE)
-  }, [countryFilters])
+  }, [countryFilters,typeFilters,vtypeFilters])
 
   const fetchRecipes = async () => {
     try {
@@ -41,6 +43,15 @@ export default function RecipeFeed({ countryFilters }: RecipeFeedProps) {
       if (countryFilters.length > 0) {
         query = query.in('country', countryFilters)
       }
+     // Apply type filter - multiple types
+     if (typeFilters.length > 0) {
+      query = query.in('type', typeFilters)
+    }
+    if (vtypeFilters.length > 0) {
+      query = query.in('vtype', vtypeFilters)
+    }
+    
+    
 
       const { data, error } = await query
 

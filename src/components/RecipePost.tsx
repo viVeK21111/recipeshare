@@ -340,7 +340,7 @@ export default function RecipePost({ recipe }: RecipePostProps) {
       )}
 
       {/* Engagement Bar */}
-      <div className="px-4 py-3 flex items-center justify-between border-b border-gray-100">
+      <div className="px-2 py-3 flex items-center justify-between border-b border-gray-100">
         <div className="flex items-center space-x-4">
           <button
             onClick={handleLike}
@@ -366,13 +366,19 @@ export default function RecipePost({ recipe }: RecipePostProps) {
         <div className='ml-auto text-gray-500 flex items-center'>
           <CookingPot size={15} className='mr-1 '/> {recipe.type}
         </div>
+        <div
+        className={`w-2 h-2 ml-1 ${
+          recipe.vtype === 'Non-veg' ? 'bg-red-500' : 'bg-green-500'
+        }`}
+      ></div>
       </div>
 
       {/* Post Content */}
       <div className="p-4">
-        <h3 className="text-xl font-bold text-gray-900 mb-2">
-          {recipe.title}
-        </h3>
+      <div className="flex items-center gap-1">
+      <span className="text-lg font-semibold text-black">{recipe.title}</span>
+     
+    </div>
         
         <p className="text-gray-700 text-sm mb-3 leading-relaxed">
           {displayDescription}

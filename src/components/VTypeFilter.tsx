@@ -1,13 +1,12 @@
+
+
 'use client'
 
 
 const MEAL_TYPES = [
-  { value: 'Breakfast', label: 'Breakfast', emoji: '🍳' },
-  { value: 'Brunch', label: 'Brunch', emoji: '🥞' },
-  { value: 'Lunch', label: 'Lunch', emoji: '🥗' },
-  { value: 'Snack', label: 'Snack', emoji: '🍿' },
-  { value: 'Dinner', label: 'Dinner', emoji: '🍛' },
-]
+    { value: 'Veg', label: 'Veg', emoji: '🥦' },
+    { value: 'Non-veg', label: 'Non-veg', emoji: '🥩' },
+  ]
 
 interface TypeFilterProps {
   selectedTypes: string[]
@@ -36,7 +35,7 @@ export default function TypeFilter({ selectedTypes, onTypesChange }: TypeFilterP
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center space-x-3">
           <h3 className="text-sm font-semibold text-gray-700 flex items-center space-x-2">
-            <span>Meal Type</span>
+            <span>Type</span>
           </h3>
           {selectedTypes.length > 0 && (
             <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">

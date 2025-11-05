@@ -21,6 +21,7 @@ export default function NewRecipe() {
     instructions: [''],
     country: '',
     type:'',
+    vtype:'',
     prep_time: '',
     cook_time: '',
     servings: '',
@@ -113,6 +114,7 @@ export default function NewRecipe() {
           instructions: formData.instructions.filter(instruction => instruction.trim() !== ''),
           country: formData.country,
           type: formData.type,
+          vtype: formData.vtype,
           prep_time: parseInt(formData.prep_time),
           cook_time: parseInt(formData.cook_time),
           servings: parseInt(formData.servings),
@@ -294,6 +296,20 @@ export default function NewRecipe() {
                   <option value="Lunch">🥗 Lunch</option>
                   <option value="Snack">🍿 Snack</option>
                   <option value="Dinner">🍛 Dinner</option>
+                </select>
+              </div>
+              <div className='text-gray-500'>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Type
+                </label>
+                <select
+                  value={formData.type}
+                  onChange={(e) => setFormData(prev => ({ ...prev, vtype: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  required
+                >
+                  <option value="Veg">Veg</option>
+                  <option value="Non-veg">Non-veg</option>
                 </select>
               </div>
               </div>
