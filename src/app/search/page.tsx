@@ -290,15 +290,16 @@ export default function SearchPage() {
                             {/* Author */}
                             <div className="flex items-center space-x-2 mt-3">
                               {recipe.user?.avatar_url ? (
-                                <Image
-                                  src={recipe.user.avatar_url}
+                                <img
+                                  src={recipe.user.avatar_url || '/defaultU.png'}
                                   alt={recipe.user.name}
                                   width={24}
                                   height={24}
                                   className="rounded-full"
+                                  onError={(e) => (e.currentTarget.src = '/defaultU.png')}
                                 />
                               ) : (
-                                <Image
+                                <img
                                   src="/defaultU.png"
                                   alt={recipe.user?.name || 'User'}
                                   width={24}
