@@ -195,7 +195,7 @@ export default function SearchPage() {
                           {foundUser.avatar_url ? (
                             <img
                               src={foundUser.avatar_url}
-                              alt={foundUser.name}
+                              alt={foundUser.name.split('@')[0]}
                               width={60}
                               height={60}
                               className="rounded-full"
@@ -204,7 +204,7 @@ export default function SearchPage() {
                           ) : (
                             <img
                               src="/defaultU.png"
-                              alt={foundUser.name}
+                              alt={foundUser.name.split('@')[0]}
                               width={60}
                               height={60}
                               className="rounded-full"
@@ -307,7 +307,7 @@ export default function SearchPage() {
                                 />
                               )}
                               <span className="text-sm text-gray-600">
-                                by {recipe.user?.name || 'Anonymous'}
+                                by {recipe.user?.name.split('@')[0]}
                               </span>
                             </div>
                           </div>
