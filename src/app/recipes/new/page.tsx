@@ -296,6 +296,7 @@ export default function NewRecipe() {
                   <option value="Lunch">🥗 Lunch</option>
                   <option value="Snack">🍿 Snack</option>
                   <option value="Dinner">🍛 Dinner</option>
+                  <option value="Dessert">🍛 Dessert</option>
                 </select>
               </div>
               <div className='text-gray-500'>

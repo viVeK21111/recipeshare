@@ -7,6 +7,7 @@ const MEAL_TYPES = [
   { value: 'Lunch', label: 'Lunch', emoji: '🥗' },
   { value: 'Snack', label: 'Snack', emoji: '🍿' },
   { value: 'Dinner', label: 'Dinner', emoji: '🍛' },
+  { value: 'Dessert', label: 'Dessert', emoji: '🍮' },
 ]
 
 interface TypeFilterProps {

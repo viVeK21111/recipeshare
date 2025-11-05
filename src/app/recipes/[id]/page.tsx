@@ -15,7 +15,8 @@ import {
   UserGroupIcon,
   MapPinIcon,
   ShareIcon,
-  PencilIcon
+  PencilIcon,
+  DivideIcon
 } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
 
@@ -232,12 +233,12 @@ export default function RecipeDetail() {
                 <p className="md:text-lg text-gray-600">
                   {recipe.description}
                 </p>
-                <p className='my-2 text-gray-500 flex items-center'>Best served for {recipe.type} 
-                  <div
+                <div className='my-2 text-gray-500 flex items-center'>Best served for {recipe.type} 
+                  <p
                 className={`w-2 h-2 ml-1 ${
                   recipe.vtype === 'Non-veg' ? 'bg-red-500' : 'bg-green-500'
                 }`}
-              ></div></p>
+              ></p></div>
               </div>
               
               <div className="flex items-center space-x-2 md:ml-4">

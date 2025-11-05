@@ -24,7 +24,7 @@ export interface Recipe {
   ingredients: string[]
   instructions: string[]
   country: string
-  type: 'Breakfast' | 'Brunch' | 'Lunch' | 'Snack' | 'Dinner' | 'Any'
+  type: 'Breakfast' | 'Brunch' | 'Lunch' | 'Snack' | 'Dinner' | 'Dessert' | 'Any'
   vtype: 'Veg' | 'Non-veg'
   prep_time: number
   cook_time: number

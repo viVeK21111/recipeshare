@@ -2,8 +2,6 @@
 scroll position maintain after coming back from recipe
 add more filter 
   - gluten free
-  - soups or drinks
-  - desserts
 /settings page
  - delete account
  - preferences
@@ -16,7 +14,6 @@ dark mode
 
 when many users:
 
-search user or recipes
 private and public accounts
 following posts
 stories 
@@ -29,3 +26,6 @@ communities
 verified profiles blue mark
 ebook recipes
 subscirption to veiw premium recipes
+comments reply
+
+
