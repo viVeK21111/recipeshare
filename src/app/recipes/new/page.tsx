@@ -20,7 +20,7 @@ export default function NewRecipe() {
     ingredients: [''],
     instructions: [''],
     country: '',
-    type:'',
+    type:'Any',
     vtype:'Veg',
     prep_time: '',
     cook_time: '',
