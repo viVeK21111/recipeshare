@@ -21,7 +21,7 @@ export default function NewRecipe() {
     instructions: [''],
     country: '',
     type:'',
-    vtype:'',
+    vtype:'Veg',
     prep_time: '',
     cook_time: '',
     servings: '',
