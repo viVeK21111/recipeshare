@@ -304,7 +304,7 @@ export default function NewRecipe() {
                   Type
                 </label>
                 <select
-                  value={formData.type}
+                  value={formData.vtype}
                   onChange={(e) => setFormData(prev => ({ ...prev, vtype: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
                   required
