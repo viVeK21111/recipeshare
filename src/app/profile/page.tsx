@@ -15,6 +15,7 @@ import {
 } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTheme } from '@/app/context/ThemeContext'
 
 export default function MyProfilePage() {
   const { user } = useUser()
@@ -33,6 +34,7 @@ export default function MyProfilePage() {
     website: ''
   })
   const [pendingRequests, setPendingRequests] = useState<UserType[]>([])
+  const { theme } = useTheme()
 
   const handleDeleteRecipe = async (recipeId: string) => {
     try {
@@ -231,7 +233,7 @@ export default function MyProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <Header user={user} />
         <div className="flex items-center justify-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-600 border-t-transparent"></div>
@@ -242,15 +244,15 @@ export default function MyProfilePage() {
 
   if (!profileUser) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <Header user={user} />
         <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Profile not found</h2>
+          <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Profile not found</h2>
         </div>
       </div>
     )
   }
-
+  
   const handleAcceptRequest = async (requesterId: string) => {
     if (!user) return
   
@@ -296,12 +298,12 @@ export default function MyProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Header user={user} />
       
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Profile Header */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className={`rounded-xl shadow-sm border p-6 mb-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
           <div className="md:flex items-start justify-between mb-6">
             <div className="flex items-center space-x-6">
              {/* Profile Header */}
@@ -324,16 +326,16 @@ export default function MyProfilePage() {
           )}
               
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                <h1 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
                   {profileUser.name === profileUser.email ?  profileUser.name.split('@')[0] : profileUser.name}
                 </h1>
-                <p className="text-gray-600">{profileUser.email}</p>
+                <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>{profileUser.email}</p>
               </div>
             </div>
 
             <button
               onClick={() => setIsEditing(!isEditing)}
-              className="flex items-center space-x-2 px-4 mt-2 md:mt-0 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              className={`flex items-center space-x-2 px-4 mt-2 md:mt-0 py-2 rounded-lg transition-colors ${theme === 'dark' ? 'bg-gray-700 text-gray-100 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
             >
               <PencilIcon className="h-4 w-4" />
               <span>{isEditing ? 'Cancel' : 'Edit Profile'}</span>
@@ -342,42 +344,42 @@ export default function MyProfilePage() {
 
           {/* Edit Form */}
           {isEditing ? (
-            <div className="space-y-4 border-t pt-6">
+            <div className={`space-y-4 border-t pt-6 ${theme === 'dark' ? 'border-gray-700' : ''}`}>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Bio
                 </label>
                 <textarea
                   value={editForm.bio}
                   onChange={(e) => setEditForm(prev => ({ ...prev, bio: e.target.value }))}
                   rows={3}
-                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   placeholder="Tell us about yourself..."
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Location
                 </label>
                 <input
                   type="text"
                   value={editForm.location}
                   onChange={(e) => setEditForm(prev => ({ ...prev, location: e.target.value }))}
-                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   placeholder="City, Country"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Website
                 </label>
                 <input
                   type="url"
                   value={editForm.website}
                   onChange={(e) => setEditForm(prev => ({ ...prev, website: e.target.value }))}
-                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   placeholder="https://example.com"
                 />
               </div>
@@ -392,12 +394,12 @@ export default function MyProfilePage() {
           ) : (
             <>
               {profileUser.bio && (
-                <p className="text-gray-700 mb-4">
+                <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} mb-4`}>
                   {profileUser.bio}
                 </p>
               )}
 
-              <div className="flex items-center space-x-6 text-sm text-gray-600 mb-4">
+              <div className={`flex items-center space-x-6 text-sm mb-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                 {profileUser.location && (
                   <div className="flex items-center space-x-1">
                     <MapPinIcon className="h-4 w-4" />
@@ -420,12 +422,12 @@ export default function MyProfilePage() {
               {/* Stats */}
               <div className="flex items-center space-x-6">
                 <div>
-                  <span className="font-bold text-gray-900">{recipes.length}</span>
-                  <span className="text-gray-600 ml-1">Recipes</span>
+                  <span className={`font-bold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{recipes.length}</span>
+                  <span className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} ml-1`}>Recipes</span>
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900">{friendsCount}</span>
-                  <span className="text-gray-600 ml-1">Friends</span>
+                  <span className={`font-bold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{friendsCount}</span>
+                  <span className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} ml-1`}>Friends</span>
                 </div>
               </div>
             </>
@@ -434,15 +436,15 @@ export default function MyProfilePage() {
 
         {/* Friend Requests Section */}
 {pendingRequests.length > 0 && (
-  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-    <h2 className="text-xl font-bold text-gray-900 mb-4">
+  <div className={`rounded-xl shadow-sm border p-6 mb-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+    <h2 className={`text-xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
       Friend Requests ({pendingRequests.length})
     </h2>
     <div className="space-y-3">
       {pendingRequests.map((requester) => (
         <div
           key={requester.id}
-          className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+          className={`flex items-center justify-between p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}
         >
           <div className="flex items-center space-x-3">
            {/* In Friends List */}
@@ -464,8 +466,8 @@ export default function MyProfilePage() {
             />
           )}
             <div>
-              <p className="font-semibold text-gray-900"> {requester.name === requester.email ?  requester.name.split('@')[0] : requester.name}</p>
-              <p className="text-sm text-gray-600">wants to be friends</p>
+              <p className={`font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}> {requester.name === requester.email ?  requester.name.split('@')[0] : requester.name}</p>
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>wants to be friends</p>
             </div>
           </div>
           <div className="flex space-x-2">
@@ -477,7 +479,7 @@ export default function MyProfilePage() {
             </button>
             <button
               onClick={() => handleRejectRequest(requester.id)}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+              className={`px-4 py-2 rounded-lg transition-colors ${theme === 'dark' ? 'bg-gray-700 text-gray-100 hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
             >
               Decline
             </button>
@@ -489,13 +491,13 @@ export default function MyProfilePage() {
 )}
 
         {/* Tabs */}
-        <div className="flex border-b border-gray-200 mb-6">
+        <div className={`flex border-b mb-6 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
           <button
             onClick={() => setActiveTab('recipes')}
             className={`px-6 py-3 font-semibold transition-colors ${
               activeTab === 'recipes'
                 ? 'text-orange-600 border-b-2 border-orange-600'
-                : 'text-gray-600 hover:text-gray-900'
+                : (theme === 'dark' ? 'text-gray-300 hover:text-gray-100' : 'text-gray-600 hover:text-gray-900')
             }`}
           >
             Recipes ({recipes.length})
@@ -505,7 +507,7 @@ export default function MyProfilePage() {
             className={`px-6 py-3 font-semibold transition-colors ${
               activeTab === 'friends'
                 ? 'text-orange-600 border-b-2 border-orange-600'
-                : 'text-gray-600 hover:text-gray-900'
+                : (theme === 'dark' ? 'text-gray-300 hover:text-gray-100' : 'text-gray-600 hover:text-gray-900')
             }`}
           >
             Friends ({friendsCount})
@@ -526,8 +528,8 @@ export default function MyProfilePage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-                <p className="text-gray-500 mb-4">No recipes yet</p>
+              <div className={`text-center py-12 rounded-lg border ${theme === 'dark' ? 'bg-gray-800 border-gray-700 text-gray-300' : 'bg-white border-gray-200 text-gray-500'}`}>
+                <p className="mb-4">No recipes yet</p>
                 <Link
                   href="/recipes/new"
                   className="inline-block px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors"
@@ -547,7 +549,7 @@ export default function MyProfilePage() {
                   <Link
                     key={friend.id}
                     href={`/profile/${friend.id}`}
-                    className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                    className={`block rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
                   >
                     <div className="flex items-center space-x-4">
                       {/* In Friends List */}
@@ -569,9 +571,9 @@ export default function MyProfilePage() {
                     />
                   )}
                       <div>
-                        <h3 className="font-semibold text-gray-900"> {friend.name === friend.email ?  friend.name.split('@')[0] : friend.name}</h3>
+                        <h3 className={`font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}> {friend.name === friend.email ?  friend.name.split('@')[0] : friend.name}</h3>
                         {friend.bio && (
-                          <p className="text-sm text-gray-600 line-clamp-2 mt-1">
+                          <p className={`text-sm line-clamp-2 mt-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                             {friend.bio}
                           </p>
                         )}
@@ -581,9 +583,9 @@ export default function MyProfilePage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-                <UserGroupIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500 mb-4">No friends yet</p>
+              <div className={`text-center py-12 rounded-lg border ${theme === 'dark' ? 'bg-gray-800 border-gray-700 text-gray-300' : 'bg-white border-gray-200 text-gray-500'}`}>
+                <UserGroupIcon className={`h-16 w-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-400'}`} />
+                <p className="mb-4">No friends yet</p>
                 <Link
                   href="/recipes"
                   className="inline-block px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors"

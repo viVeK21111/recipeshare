@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { MapPinIcon, ChevronDownIcon, XMarkIcon, CheckIcon } from '@heroicons/react/24/outline'
+import { useTheme } from '@/app/context/ThemeContext'
 
 interface Country {
   code: string
@@ -36,6 +37,7 @@ interface CountryFilterProps {
 export default function CountryFilter({ selectedCountries, onCountriesChange }: CountryFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const { theme } = useTheme()
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -82,21 +84,21 @@ export default function CountryFilter({ selectedCountries, onCountriesChange }: 
       {/* Dropdown Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full md:w-auto min-w-[250px] bg-white rounded-lg shadow-sm border border-gray-200 p-3 flex items-center justify-between hover:border-orange-300 transition-colors"
+        className={`w-full md:w-auto min-w-[250px] ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-lg shadow-sm border p-3 flex items-center justify-between hover:border-orange-300 transition-colors`}
       >
         <div className="flex items-center space-x-3">
-          <MapPinIcon className="h-5 w-5 text-gray-600" />
-          <span className="font-medium text-gray-900">{getSelectedCountryNames()}</span>
+          <MapPinIcon className={`h-5 w-5 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`} />
+          <span className={`font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{getSelectedCountryNames()}</span>
         </div>
-        <ChevronDownIcon className={`h-5 w-5 text-gray-600 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDownIcon className={`h-5 w-5 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute z-50 mt-2 w-full bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-hidden">
+        <div className={`absolute z-50 mt-2 w-full ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-lg shadow-lg border max-h-96 overflow-hidden`}>
           {/* Header */}
-          <div className="p-3 border-b border-gray-200 flex items-center justify-between bg-gray-50">
-            <span className="text-sm font-semibold text-gray-700">Select Countries</span>
+          <div className={`p-3 border-b ${theme === 'dark' ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-50'} flex items-center justify-between`}>
+            <span className={`text-sm font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'}`}>Select Countries</span>
             <div className="flex items-center space-x-2">
               {selectedCountries.length > 0 && (
                 <button
@@ -123,13 +125,13 @@ export default function CountryFilter({ selectedCountries, onCountriesChange }: 
                 <button
                   key={country.code}
                   onClick={() => handleCountryToggle(country.code)}
-                  className={`w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors ${
+                  className={`w-full px-4 py-3 flex items-center justify-between ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-50'} transition-colors ${
                     isSelected ? 'bg-orange-50' : ''
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-2xl">{country.flag}</span>
-                    <span className={`font-medium ${isSelected ? 'text-orange-700' : 'text-gray-700'}`}>
+                    <span className={`font-medium ${isSelected ? 'text-orange-700' : (theme === 'dark' ? 'text-gray-100' : 'text-gray-700')}`}>
                       {country.name}
                     </span>
                   </div>
@@ -143,7 +145,7 @@ export default function CountryFilter({ selectedCountries, onCountriesChange }: 
 
           {/* Footer */}
           {selectedCountries.length > 0 && selectedCountries.length < COUNTRIES.length && (
-            <div className="p-3 border-t border-gray-200 bg-gray-50">
+            <div className={`p-3 border-t ${theme === 'dark' ? 'border-gray-700 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}>
               <div className="flex flex-wrap gap-2">
                 {selectedCountries.map((code) => {
                   const country = COUNTRIES.find(c => c.code === code)

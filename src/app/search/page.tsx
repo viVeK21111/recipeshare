@@ -14,6 +14,7 @@ import {
 } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useTheme } from '@/app/context/ThemeContext'
 
 type SearchType = 'users' | 'recipes'
 
@@ -36,6 +37,7 @@ export default function SearchPage() {
     recipes: []
   })
   const [isSearching, setIsSearching] = useState(false)
+  const { theme } = useTheme()
 
   // Debounced search
   useEffect(() => {
@@ -106,18 +108,18 @@ export default function SearchPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Header user={user} />
       
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Search</h1>
-          <p className="text-gray-600">Find recipes and connect with other food lovers</p>
+          <h1 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Search</h1>
+          <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Find recipes and connect with other food lovers</p>
         </div>
 
         {/* Search Type Tabs */}
-        <div className="flex space-x-2 mb-6 bg-white rounded-lg shadow-sm border border-gray-200 p-2">
+        <div className={`flex space-x-2 mb-6 rounded-lg shadow-sm border p-2 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
           <button
             onClick={() => {
               setSearchType('recipes')
@@ -126,7 +128,7 @@ export default function SearchPage() {
             className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-semibold transition-all ${
               searchType === 'recipes'
                 ? 'bg-orange-600 text-white shadow-md'
-                : 'text-gray-600 hover:bg-gray-100'
+                : (theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100')
             }`}
           >
             <DocumentTextIcon className="h-5 w-5" />
@@ -140,7 +142,7 @@ export default function SearchPage() {
             className={`flex-1 flex items-center justify-center space-x-2 px-4 py-3 rounded-lg font-semibold transition-all ${
               searchType === 'users'
                 ? 'bg-orange-600 text-white shadow-md'
-                : 'text-gray-600 hover:bg-gray-100'
+                : (theme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-100')
             }`}
           >
             <UserIcon className="h-5 w-5" />
@@ -151,14 +153,14 @@ export default function SearchPage() {
         {/* Search Input */}
         <div className="relative mb-8">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
+            <MagnifyingGlassIcon className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-400'}`} />
           </div>
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={searchType === 'recipes' ? 'Search recipes...' : 'Search users...'}
-            className="w-full pl-12 pr-4 py-4 text-black text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white shadow-sm"
+            className={`w-full pl-12 pr-4 py-4 text-lg border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 shadow-sm ${theme === 'dark' ? 'bg-gray-800 text-gray-100 border-gray-700 placeholder-gray-400' : 'text-black border-gray-300 bg-white'}`}
           />
           {isSearching && (
             <div className="absolute inset-y-0 right-0 pr-4 flex items-center">
@@ -170,8 +172,8 @@ export default function SearchPage() {
         {/* Search Results */}
         {searchQuery.length < 2 ? (
           <div className="text-center py-20">
-            <MagnifyingGlassIcon className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">
+            <MagnifyingGlassIcon className={`h-16 w-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-300'}`} />
+            <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
               Type at least 2 characters to start searching {searchType}
             </p>
           </div>
@@ -182,14 +184,14 @@ export default function SearchPage() {
               <div className="space-y-3">
                 {searchResults.users.length > 0 ? (
                   <>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <p className={`text-sm mb-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                       Found {searchResults.users.length} user{searchResults.users.length !== 1 ? 's' : ''}
                     </p>
                     {searchResults.users.map((foundUser) => (
                       <Link
                         key={foundUser.id}
                         href={user?.email === foundUser.email ?`/profile` : `/profile/${foundUser.id}`}
-                        className="block bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md hover:border-orange-300 transition-all"
+                        className={`block rounded-lg shadow-sm border overflow-hidden hover:shadow-md hover:border-orange-300 transition-all ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
                       >
                         <div className="flex items-center space-x-4">
                           {foundUser.avatar_url ? (
@@ -211,16 +213,16 @@ export default function SearchPage() {
                             />
                           )}
                           <div className="flex-1">
-                            <h3 className="font-semibold text-gray-900 text-lg">
+                            <h3 className={`font-semibold text-lg ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
                               {foundUser.name.split('@')[0]}
                             </h3>
                             {foundUser.bio && (
-                              <p className="text-sm text-gray-500 mt-1 line-clamp-2">
+                              <p className={`text-sm mt-1 line-clamp-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
                                 {foundUser.bio}
                               </p>
                             )}
                           </div>
-                          <div className="text-gray-400">
+                          <div className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-400'}`}>
                             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                             </svg>
@@ -231,9 +233,9 @@ export default function SearchPage() {
                   </>
                 ) : (
                   !isSearching && (
-                    <div className="text-center py-20 bg-white rounded-lg border border-gray-200">
-                      <UserIcon className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                      <p className="text-gray-500">
+                    <div className={`text-center py-20 rounded-lg border ${theme === 'dark' ? 'bg-gray-800 border-gray-700 text-gray-300' : 'bg-white border-gray-200 text-gray-500'}`}>
+                      <UserIcon className={`h-16 w-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-300'}`} />
+                      <p>
                         No users found matching "{searchQuery}"
                       </p>
                     </div>
@@ -247,14 +249,14 @@ export default function SearchPage() {
               <div className="space-y-3">
                 {searchResults.recipes.length > 0 ? (
                   <>
-                    <p className="text-sm text-gray-600 mb-4">
+                    <p className={`text-sm mb-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                       Found {searchResults.recipes.length} recipe{searchResults.recipes.length !== 1 ? 's' : ''}
                     </p>
                     {searchResults.recipes.map((recipe) => (
                       <Link
                         key={recipe.id}
                         href={`/recipes/${recipe.id}`}
-                        className="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md hover:border-orange-300 transition-all"
+                        className={`block rounded-lg shadow-sm border overflow-hidden hover:shadow-md hover:border-orange-300 transition-all ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}
                       >
                         <div className="flex">
                           {/* Recipe Image */}
@@ -269,14 +271,14 @@ export default function SearchPage() {
 
                           {/* Recipe Info */}
                           <div className="flex-1 p-4">
-                            <h3 className="font-semibold text-gray-900 text-lg mb-1 line-clamp-1">
+                            <h3 className={`font-semibold text-lg mb-1 line-clamp-1 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
                               {recipe.title}
                             </h3>
-                            <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                            <p className={`text-sm mb-2 line-clamp-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                               {recipe.description}
                             </p>
 
-                            <div className="flex items-center space-x-4 text-sm text-gray-500">
+                            <div className={`flex items-center space-x-4 text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
                               <div className="flex items-center space-x-1">
                                 <ClockIcon className="h-4 w-4" />
                                 <span>{recipe.prep_time + recipe.cook_time} min</span>
@@ -307,14 +309,14 @@ export default function SearchPage() {
                                   className="rounded-full"
                                 />
                               )}
-                              <span className="text-sm text-gray-600">
+                              <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                                 by {recipe.user?.name.split('@')[0]}
                               </span>
                             </div>
                           </div>
 
-                          <div className="flex items-center pr-4">
-                            <svg className="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <div className={`${theme === 'dark' ? 'text-gray-400' : 'text-gray-400'} flex items-center pr-4`}>
+                            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                             </svg>
                           </div>
@@ -324,9 +326,9 @@ export default function SearchPage() {
                   </>
                 ) : (
                   !isSearching && (
-                    <div className="text-center py-20 bg-white rounded-lg border border-gray-200">
-                      <DocumentTextIcon className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                      <p className="text-gray-500">
+                    <div className={`text-center py-20 rounded-lg border ${theme === 'dark' ? 'bg-gray-800 border-gray-700 text-gray-300' : 'bg-white border-gray-200 text-gray-500'}`}>
+                      <DocumentTextIcon className={`h-16 w-16 mx-auto mb-4 ${theme === 'dark' ? 'text-gray-600' : 'text-gray-300'}`} />
+                      <p>
                         No recipes found matching "{searchQuery}"
                       </p>
                     </div>

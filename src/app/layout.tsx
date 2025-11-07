@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import ClientAuth0Provider from '@/components/ClientAuth0Provider'
+import { ThemeProvider } from './context/ThemeContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,7 +23,9 @@ export default function RootLayout({
   </head>
       <body className={inter.className}>
         <ClientAuth0Provider>
-          {children}
+          <ThemeProvider>
+            {children}
+          </ThemeProvider>
         </ClientAuth0Provider>
       </body>
     </html>

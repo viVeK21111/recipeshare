@@ -13,6 +13,7 @@ import {
   CheckCircleIcon,
   ExclamationCircleIcon
 } from '@heroicons/react/24/outline'
+import { useTheme } from '@/app/context/ThemeContext'
 
 export default function ContactPage() {
   const { user } = useUser()
@@ -23,6 +24,7 @@ export default function ContactPage() {
   })
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState('')
+  const { theme } = useTheme()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
@@ -89,24 +91,24 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Header user={user} />
       
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header Section */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className={`text-4xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
             Get in Touch
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className={`text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
             Have a question or feedback? We'd love to hear from you!
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           {/* Contact Form */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a message</h2>
+          <div className={`rounded-xl shadow-sm border p-6 md:p-8 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+            <h2 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Send us a message</h2>
 
             {status === 'success' && (
               <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-start space-x-3">
@@ -133,12 +135,12 @@ export default function ContactPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Field */}
               <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="name" className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Your Name
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <UserIcon className="h-5 w-5 text-gray-400" />
+                    <UserIcon className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-400'}`} />
                   </div>
                   <input
                     type="text"
@@ -148,19 +150,19 @@ export default function ContactPage() {
                     onChange={handleChange}
                     placeholder="John Doe"
                     required
-                    className="block w-full pl-10 pr-3 py-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   />
                 </div>
               </div>
 
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="email" className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Your Email
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <EnvelopeIcon className="h-5 w-5 text-gray-400" />
+                    <EnvelopeIcon className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-400'}`} />
                   </div>
                   <input
                     type="email"
@@ -170,19 +172,19 @@ export default function ContactPage() {
                     onChange={handleChange}
                     placeholder="john@example.com"
                     required
-                    className="block w-full pl-10 pr-3 py-3 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors"
+                    className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   />
                 </div>
               </div>
 
               {/* Message Field */}
               <div>
-                <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                <label htmlFor="message" className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Your Message
                 </label>
                 <div className="relative">
                   <div className="absolute top-3 left-3 pointer-events-none">
-                    <ChatBubbleLeftRightIcon className="h-5 w-5 text-gray-400" />
+                    <ChatBubbleLeftRightIcon className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-400'}`} />
                   </div>
                   <textarea
                     id="message"
@@ -192,10 +194,10 @@ export default function ContactPage() {
                     placeholder="Tell us what's on your mind..."
                     rows={6}
                     required
-                    className="block w-full pl-10 pr-3 text-black py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors resize-none"
+                    className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-colors resize-none ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   />
                 </div>
-                <p className="mt-2 text-sm text-gray-500">
+                <p className={`mt-2 text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
                   {formData.message.length} / 1000 characters
                 </p>
               </div>
@@ -227,13 +229,13 @@ export default function ContactPage() {
           {/* Contact Info & FAQ */}
           <div className="space-y-6">
             {/* Contact Information */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Contact Information</h3>
+            <div className={`rounded-xl shadow-sm border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+              <h3 className={`text-xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Contact Information</h3>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <EnvelopeIcon className="h-6 w-6 text-orange-600 flex-shrink-0" />
                   <div>
-                    <p className="font-semibold text-gray-900">Email</p>
+                    <p className={`font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Email</p>
                     <a href="mailto:support@recipeeshare.com" className="text-orange-600 hover:text-orange-700">
                       vivekvemula23@gmail.com
                     </a>
@@ -242,21 +244,21 @@ export default function ContactPage() {
                 <div className="flex items-start space-x-3">
                   <ChatBubbleLeftRightIcon className="h-6 w-6 text-orange-600 flex-shrink-0" />
                   <div>
-                    <p className="font-semibold text-gray-900">Response Time</p>
-                    <p className="text-gray-600">We typically respond within 24-48 hours</p>
+                    <p className={`font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Response Time</p>
+                    <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>We typically respond within 24-48 hours</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* FAQ Section */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Common Questions</h3>
+            <div className={`rounded-xl shadow-sm border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+              <h3 className={`text-xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Common Questions</h3>
               <div className="space-y-4">
                
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">How do I report a recipe?</h4>
-                  <p className="text-sm text-gray-600">
+                  <h4 className={`font-semibold mb-1 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>How do I report a recipe?</h4>
+                  <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                     Use this contact form to report any inappropriate content, and we'll review it promptly.
                   </p>
                 </div>
@@ -264,9 +266,9 @@ export default function ContactPage() {
             </div>
 
             {/* Community Guidelines */}
-            <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-xl border border-orange-200 p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Join Our Community</h3>
-              <p className="text-gray-700 text-sm mb-4">
+            <div className={`rounded-xl border p-6 ${theme === 'dark' ? 'from-gray-800 to-gray-700 border-gray-700 bg-gradient-to-br' : 'from-orange-50 to-red-50 border-orange-200 bg-gradient-to-br'}`}>
+              <h3 className={`text-xl font-bold mb-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Join Our Community</h3>
+              <p className={`${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'} text-sm mb-4`}>
                  Coming soon...
               </p>
               {!user && (

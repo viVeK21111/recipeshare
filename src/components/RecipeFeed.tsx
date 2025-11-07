@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase, Recipe } from '@/lib/supabase'
 import RecipePost from './RecipePost'
 import LoadingSpinner from './LoadingSpinner'
+import { useTheme } from '@/app/context/ThemeContext'
 
 interface RecipeFeedProps {
   countryFilters: string[] // Changed from string to string[]
@@ -81,13 +82,15 @@ export default function RecipeFeed({ countryFilters,typeFilters,vtypeFilters }: 
   const displayedRecipes = recipes.slice(0, displayCount)
   const hasMore = displayCount < recipes.length
 
+  const { theme } = useTheme()
+
   if (loading) {
     return <LoadingSpinner />
   }
 
   if (error) {
     return (
-      <div className="text-center py-12">
+      <div className={`text-center py-12 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
         <div className="text-red-600 text-lg font-medium mb-4">{error}</div>
         <button
           onClick={fetchRecipes}
@@ -101,10 +104,10 @@ export default function RecipeFeed({ countryFilters,typeFilters,vtypeFilters }: 
 
   if (recipes.length === 0) {
     return (
-      <div className="text-center py-20">
+      <div className={`text-center py-20 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
         <div className="text-6xl mb-4">🍽️</div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">No recipes found</h3>
-        <p className="text-gray-600">
+        <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'} mb-2`}>No recipes found</h3>
+        <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
           {countryFilters.length > 0
             ? 'No recipes from selected countries. Try selecting different countries.'
             : 'Be the first to share a recipe!'}
@@ -125,7 +128,7 @@ export default function RecipeFeed({ countryFilters,typeFilters,vtypeFilters }: 
         <div className="flex justify-center mt-8 mb-12">
           <button
             onClick={handleLoadMore}
-            className="px-8 py-3 bg-white border-2 border-orange-600 text-orange-600 font-semibold rounded-lg hover:bg-orange-50 transition-colors"
+            className={`px-8 py-3 border-2 border-orange-600 text-orange-600 font-semibold rounded-lg hover:bg-orange-50 transition-colors ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}
           >
             Load More Recipes
           </button>

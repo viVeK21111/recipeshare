@@ -17,6 +17,7 @@ import {
   HeartIcon as HeartSolidIcon,
   BookmarkIcon as BookmarkSolidIcon
 } from '@heroicons/react/24/solid'
+import { useTheme } from '@/app/context/ThemeContext'
 
 interface RecipeFavProps {
   recipe: Recipe
@@ -46,6 +47,7 @@ export default function RecipeFav({ recipe }: RecipeFavProps) {
   const [isFavorited, setIsFavorited] = useState(false)
   const [likesCount, setLikesCount] = useState(recipe.likes_count || 0)
   const [showFullDescription, setShowFullDescription] = useState(false)
+  const { theme } = useTheme()
 
   useEffect(() => {
     if (user) {
@@ -120,7 +122,7 @@ export default function RecipeFav({ recipe }: RecipeFavProps) {
     : recipe.description.substring(0, 150) + '...'
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200 md:h-[400px] md:w-[350px]  flex flex-col">
+    <div className={`rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow duration-200 md:h-[400px] md:w-[350px]  flex flex-col ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
       {/* Header */}
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -133,15 +135,15 @@ export default function RecipeFav({ recipe }: RecipeFavProps) {
               className="rounded-full"
             />
           ) : (
-            <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-400 rounded-full flex items-center justify-center">
-              <span className="text-white font-semibold text-sm">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${theme === 'dark' ? 'bg-gray-700' : 'bg-gradient-to-br from-orange-400 to-red-400'}`}>
+              <span className={`font-semibold text-sm ${theme === 'dark' ? 'text-gray-100' : 'text-white'}`}>
                 {recipe.user?.name?.charAt(0) || 'U'}
               </span>
             </div>
           )}
           <div>
-            <p className="font-semibold text-gray-900">{recipe.user?.name || 'Anonymous'}</p>
-            <div className="flex items-center space-x-2 text-xs text-gray-500">
+            <p className={`font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{recipe.user?.name || 'Anonymous'}</p>
+            <div className={`flex items-center space-x-2 text-xs ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
               <span>{countryInfo.flag} {countryInfo.name}</span>
               <span>•</span>
               <span>{formatDateTime(recipe.created_at)}</span>
@@ -151,13 +153,13 @@ export default function RecipeFav({ recipe }: RecipeFavProps) {
 
         <button
           onClick={handleFavorite}
-          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          className={`p-2 rounded-full transition-colors ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
           title={isFavorited ? "Remove from favorites" : "Add to favorites"}
         >
           {isFavorited ? (
             <BookmarkSolidIcon className="h-6 w-6 text-orange-600" />
           ) : (
-            <BookmarkIcon className="h-6 w-6 text-gray-600 hover:text-orange-600" />
+            <BookmarkIcon className={`h-6 w-6 ${theme === 'dark' ? 'text-gray-300 hover:text-orange-600' : 'text-gray-600 hover:text-orange-600'}`} />
           )}
         </button>
       </div>
@@ -173,7 +175,7 @@ export default function RecipeFav({ recipe }: RecipeFavProps) {
           />
         </div>
       ) : (
-        <div className="w-full h-[180px] bg-gradient-to-br from-orange-100 via-red-50 to-orange-100 flex items-center justify-center">
+        <div className={`w-full h-[180px] flex items-center justify-center ${theme === 'dark' ? 'bg-gray-700' : 'bg-gradient-to-br from-orange-100 via-red-50 to-orange-100'}`}>
           <div className="text-6xl">🍽️</div>
         </div>
       )}
@@ -181,8 +183,8 @@ export default function RecipeFav({ recipe }: RecipeFavProps) {
       {/* Content */}
       <div className="p-4 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="text-lg font-bold text-gray-900 mb-1">{recipe.title}</h3>
-          <p className="text-gray-700 text-sm mb-2 leading-relaxed line-clamp-3">
+          <h3 className={`text-lg font-bold mb-1 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{recipe.title}</h3>
+          <p className={`text-sm mb-2 leading-relaxed line-clamp-3 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
             {displayDescription}
             {shouldTruncate && !showFullDescription && (
               <button
@@ -195,7 +197,7 @@ export default function RecipeFav({ recipe }: RecipeFavProps) {
           </p>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
+        <div className={`flex items-center justify-between text-sm mb-3 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-1.5">
               <ClockIcon className="h-4 w-4" />
@@ -211,13 +213,13 @@ export default function RecipeFav({ recipe }: RecipeFavProps) {
               {isLiked ? (
                 <HeartSolidIcon className="h-5 w-5 text-red-500" />
               ) : (
-                <HeartIcon className="h-5 w-5 text-gray-600 group-hover:text-red-500 transition-colors" />
+                <HeartIcon className={`h-5 w-5 ${theme === 'dark' ? 'text-gray-300 group-hover:text-red-500' : 'text-gray-600 group-hover:text-red-500'}`} />
               )}
-              <span className="text-sm font-medium text-gray-700">{likesCount}</span>
+              <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'}`}>{likesCount}</span>
             </button>
             <div className="flex items-center space-x-1.5 group">
-              <ChatBubbleLeftIcon className="h-5 w-5 text-gray-600 group-hover:text-blue-500 transition-colors" />
-              <span className="text-sm font-medium text-gray-700">
+              <ChatBubbleLeftIcon className={`h-5 w-5 ${theme === 'dark' ? 'text-gray-300 group-hover:text-blue-500' : 'text-gray-600 group-hover:text-blue-500'}`} />
+              <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'}`}>
                 {recipe.comments_count || 0}
                 </span>
             </div>

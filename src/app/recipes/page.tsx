@@ -1,30 +1,38 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef} from 'react'
+import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import CountryFilter from '@/components/CountryFilter'
 import TypeFilter from '@/components/TypeFilter'
 import VTypeFilter from '@/components/VTypeFilter'
 import RecipeFeed from '@/components/RecipeFeed'
 import { useUser } from '@auth0/nextjs-auth0/client'
+import useScrollRestoration from '../../hooks/useScrollRestoration'
+import { useTheme } from '@/app/context/ThemeContext'
 
 export default function RecipesPage() {
   const { user } = useUser()
+  const router = useRouter()
+  const scrollContainerRef = useRef<HTMLElement>(null!)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]) 
   const [selectedvType, setSelectedvType] = useState<string[]>([]) 
   const [showMobileFilters, setShowMobileFilters] = useState(false)
+  const { theme } = useTheme()
+  
+  useScrollRestoration(scrollContainerRef, 'recipes-scroll-position')
 
   return (
-    <div className="min-h-screen md:h-screen bg-gray-50 flex flex-col">
+    <div className={`min-h-screen md:h-screen ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'} flex flex-col`}>
       <Header user={user} />
 
       <main className="flex-1 min-h-0 md:flex md:overflow-hidden">
         {/* Mobile filter toggle button */}
-        <div className="md:hidden p-4 border-b border-gray-200 bg-white sticky top-0 z-20">
+        <div className={`md:hidden p-4 border-b ${theme === 'dark' ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'} sticky top-0 z-20`}>
           <button
             onClick={() => setShowMobileFilters(!showMobileFilters)}
-            className="flex items-center gap-2 text-gray-700 font-medium"
+            className={`flex items-center gap-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'} font-medium`}
           >
             <span>Filters</span>
             <svg
@@ -41,7 +49,7 @@ export default function RecipesPage() {
 
         {/* Mobile filters */}
         {showMobileFilters && (
-          <div className="md:hidden p-4 bg-white border-b border-gray-200 space-y-4">
+          <div className={`md:hidden p-4 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b space-y-4`}>
             <CountryFilter
               selectedCountries={selectedCountries}
               onCountriesChange={setSelectedCountries}
@@ -58,11 +66,11 @@ export default function RecipesPage() {
         )}
 
         {/* Desktop filters */}
-        <aside className="hidden md:block md:w-80 lg:w-96 md:border-r border-gray-200 bg-white">
-          <div className="sticky top-0 z-20 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 border-b md:border-b-0">
+        <aside className={`hidden md:block md:w-80 lg:w-96 md:border-r ${theme === 'dark' ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-white'}`}>
+          <div className={`sticky top-0 z-20 ${theme === 'dark' ? 'bg-gray-800/90 backdrop-blur supports-[backdrop-filter]:bg-gray-800/70 border-b md:border-b-0' : 'bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 border-b md:border-b-0'}`}>
             <div className="p-4 md:p-5">
-              <h1 className="text-3xl font-bold text-gray-900 mb-1">Recipe Feed</h1>
-              <p className="text-gray-600">Discover and share amazing recipes from around the world</p>
+              <h1 className={`text-3xl font-bold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'} mb-1`}>Recipe Feed</h1>
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Discover and share amazing recipes from around the world</p>
 
               <div className="mt-4 space-y-4">
                 <CountryFilter
@@ -83,7 +91,9 @@ export default function RecipesPage() {
         </aside>
 
         {/* Recipe feed */}
-        <section className="flex-1 p-4 md:p-6 overflow-visible md:overflow-auto">
+        <section
+        ref={scrollContainerRef}
+         className="flex-1 p-4 md:p-6 overflow-visible md:overflow-auto">
           <div className="max-w-4xl mx-auto">
             <RecipeFeed 
               countryFilters={selectedCountries}

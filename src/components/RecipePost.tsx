@@ -18,6 +18,7 @@ import {
   HeartIcon as HeartSolidIcon,
   BookmarkIcon as BookmarkSolidIcon
 } from '@heroicons/react/24/solid'
+import { useTheme } from '@/app/context/ThemeContext'
 
 interface RecipePostProps {
   recipe: Recipe
@@ -51,6 +52,7 @@ export default function RecipePost({ recipe }: RecipePostProps) {
   const [isProcessingLike, setIsProcessingLike] = useState(false)
   const [isProcessingFavorite, setIsProcessingFavorite] = useState(false)
   const router = useRouter()
+  const { theme } = useTheme()
 
   // Check if recipe is liked and favorited on mount
   useEffect(() => {
@@ -256,7 +258,7 @@ export default function RecipePost({ recipe }: RecipePostProps) {
     : recipe.description.substring(0, 150) + '...'
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-4 overflow-hidden hover:shadow-md transition-shadow duration-200">
+    <div className={`rounded-lg shadow-sm border mb-4 overflow-hidden hover:shadow-md transition-shadow duration-200 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
       {/* Post Header */}
       <div className="p-4 flex items-center justify-between">
         <button
@@ -290,10 +292,10 @@ export default function RecipePost({ recipe }: RecipePostProps) {
             />
           )}
         <div className="text-left">
-          <p className="font-semibold text-gray-900">
+          <p className={`font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
           {recipe.user?.name === recipe.user?.email ?  recipe.user?.name.split('@')[0] : recipe.user?.name.split('@')[0]}
           </p>
-          <div className="flex items-center space-x-2 text-xs text-gray-500">
+          <div className={`flex items-center space-x-2 text-xs ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
             <span>{countryInfo.flag} {countryInfo.name}</span>
             <span>•</span>
             <span>{formatDateTime(recipe.created_at)}</span>
@@ -305,7 +307,7 @@ export default function RecipePost({ recipe }: RecipePostProps) {
         <button
           onClick={handleFavorite}
           disabled={isProcessingFavorite}
-          className={`p-2 hover:bg-gray-100 rounded-full transition-colors ${
+          className={`p-2 rounded-full transition-colors ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'} ${
             isProcessingFavorite ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           title={isFavorited ? "Remove from favorites" : "Add to favorites"}
@@ -313,7 +315,7 @@ export default function RecipePost({ recipe }: RecipePostProps) {
           {isFavorited ? (
             <BookmarkSolidIcon className="h-6 w-6 text-orange-600" />
           ) : (
-            <BookmarkIcon className="h-6 w-6 text-gray-600 hover:text-orange-600" />
+            <BookmarkIcon className={`h-6 w-6 ${theme === 'dark' ? 'text-gray-300 hover:text-orange-600' : 'text-gray-600 hover:text-orange-600'}`} />
           )}
         </button>
       </div>
@@ -340,7 +342,7 @@ export default function RecipePost({ recipe }: RecipePostProps) {
       )}
 
       {/* Engagement Bar */}
-      <div className="px-2 py-3 flex items-center justify-between border-b border-gray-100">
+      <div className={`px-2 py-3 flex items-center justify-between border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-100'}`}>
         <div className="flex items-center space-x-4">
           <button
             onClick={handleLike}
@@ -352,18 +354,18 @@ export default function RecipePost({ recipe }: RecipePostProps) {
             {isLiked ? (
               <HeartSolidIcon className="h-6 w-6 text-red-500" />
             ) : (
-              <HeartIcon className="h-6 w-6 text-gray-600 group-hover:text-red-500 transition-colors" />
+              <HeartIcon className={`h-6 w-6 ${theme === 'dark' ? 'text-gray-300 group-hover:text-red-500' : 'text-gray-600 group-hover:text-red-500'} transition-colors`} />
             )}
-            <span className="text-sm font-medium text-gray-700">{likesCount}</span>
+            <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'}`}>{likesCount}</span>
           </button>
           <button className="flex items-center space-x-1.5 group">
-            <ChatBubbleLeftIcon className="h-6 w-6 text-gray-600 group-hover:text-blue-500 transition-colors" />
-            <span className="text-sm font-medium text-gray-700">
+            <ChatBubbleLeftIcon className={`h-6 w-6 ${theme === 'dark' ? 'text-gray-300 group-hover:text-blue-500' : 'text-gray-600 group-hover:text-blue-500'} transition-colors`} />
+            <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'}`}>
               {recipe.comments_count || 0}
             </span>
           </button>
         </div>
-        <div className='ml-auto text-gray-500 flex items-center'>
+        <div className={`ml-auto ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'} flex items-center`}>
           <CookingPot size={15} className='mr-1 '/> {recipe.type}
         </div>
         <div
@@ -376,11 +378,11 @@ export default function RecipePost({ recipe }: RecipePostProps) {
       {/* Post Content */}
       <div className="p-4">
       <div className="flex items-center gap-1">
-      <span className="text-lg font-semibold text-black">{recipe.title}</span>
+      <span className={`text-lg font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>{recipe.title}</span>
      
     </div>
         
-        <p className="text-gray-700 text-sm mb-3 leading-relaxed">
+        <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'} text-sm mb-3 leading-relaxed`}>
           {displayDescription}
           {shouldTruncate && !showFullDescription && (
             <button
@@ -393,12 +395,12 @@ export default function RecipePost({ recipe }: RecipePostProps) {
         </p>
 
         {/* Recipe Stats */}
-        <div className="flex items-center space-x-4 mb-4">
-          <div className="flex items-center space-x-1.5 text-sm text-gray-600">
+        <div className={`flex items-center space-x-4 mb-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+          <div className="flex items-center space-x-1.5 text-sm">
             <ClockIcon className="h-4 w-4" />
             <span>{totalTime} min</span>
           </div>
-          <div className="flex items-center space-x-1.5 text-sm text-gray-600">
+          <div className="flex items-center space-x-1.5 text-sm">
             <UserGroupIcon className="h-4 w-4" />
             <span>{recipe.servings} servings</span>
           </div>

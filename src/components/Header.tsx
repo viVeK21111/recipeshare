@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useUser } from '@auth0/nextjs-auth0/client'
 import { SearchIcon,MessageCircleMore } from 'lucide-react'
+import { useTheme } from '@/app/context/ThemeContext'
 import {
   Bars3Icon,
   XMarkIcon,
@@ -22,6 +23,7 @@ export default function Header({ user }: HeaderProps) {
   const profileRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
   const [mobileProfileOpen, setMobileProfileOpen] = useState(false)
+  const { theme, toggleTheme } = useTheme()
 
 
   const isActive = (href: string) => pathname === href
@@ -42,7 +44,7 @@ export default function Header({ user }: HeaderProps) {
   
 
   return (
-    <header className={user ? `sticky top-0 z-50 bg-white border-b shadow-sm border-gray-200 ` : `sticky top-0 z-50 bg-black`}>
+    <header className={theme === 'dark' ? `sticky top-0 z-50 bg-black border-b shadow-sm border-gray-700 ` : `sticky top-0 z-50 bg-white border-b shadow-sm border-gray-200 `}>
       <nav className="max-w-full px-6">
         <div className="flex  items-center h-16">
 
@@ -65,7 +67,9 @@ export default function Header({ user }: HeaderProps) {
                  <Link
                  href="/recipes"
                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                   isActive('/recipes') ? 'text-gray-900' : 'text-gray-500 hover:text-orange-600'
+                   isActive('/recipes') 
+                     ? (theme === 'dark' ? 'text-white' : 'text-gray-900') 
+                     : (theme === 'dark' ? 'text-gray-500 hover:text-orange-500' : 'text-gray-500 hover:text-orange-600')
                  }`}
                >
                  Home
@@ -98,6 +102,30 @@ export default function Header({ user }: HeaderProps) {
           {/* User Menu */}
           <div className={user ? 'block' : 'ml-auto block'}>
             <div className="ml-6 m-1 flex items-center">
+            <button
+                onClick={toggleTheme}
+                className="p-2 rounded-md focus:outline-none transition-colors mr-2"
+              >
+                {theme === 'dark' ? (
+                  <svg className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 3v1m0 16v1m9-9h1M3 12h1m15.325-4.243l-.707.707M4.675 19.325l-.707.707M19.325 19.325l-.707-.707M4.675 4.675l-.707-.707"
+                    />
+                  </svg>
+                ) : (
+                  <svg className="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                    />
+                  </svg>
+                )}
+              </button>
               {user ? (
                 <div className="flex items-center space-x-6">
                   <Link
@@ -133,7 +161,7 @@ export default function Header({ user }: HeaderProps) {
              <div className="flex relative ml-auto" >
                 <Link
                     href="/search"
-                    className="inline-flex items-center md:mr-3 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300 hover:text-orange-600 transition-colors"
+                    className={`inline-flex items-center md:mr-3 px-4 py-2 border border-transparent text-sm font-medium rounded-md ${theme === 'dark' ? 'text-gray-100 bg-gray-700 hover:bg-gray-600' : 'text-gray-700 bg-gray-200 hover:bg-gray-300'} hover:text-orange-600 transition-colors`}
                   >
                     <SearchIcon className="h-4 w-4 md:mr-2" />
                     <p className="hidden md:block">Search</p>
@@ -171,23 +199,23 @@ export default function Header({ user }: HeaderProps) {
              </button>
 
              {profileOpen && (
-               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+               <div className={`absolute right-0 mt-2 w-48 rounded-md shadow-lg z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+                <Link href="/profile" className={`block px-4 py-2 text-sm ${theme === 'dark' ? 'text-gray-100 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}>
                    Profile
                  </Link>
                  
-                 <Link href="/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                 <Link href="/settings" className={`block px-4 py-2 text-sm ${theme === 'dark' ? 'text-gray-100 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}>
                    Settings
                  </Link>
-                 <Link href="/favorites" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                 <Link href="/favorites" className={`block px-4 py-2 text-sm ${theme === 'dark' ? 'text-gray-100 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}>
                    Favorites
                  </Link>
-                 <Link href="/contact" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                 <Link href="/contact" className={`block px-4 py-2 text-sm ${theme === 'dark' ? 'text-gray-100 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}>
                    Contact Us
                  </Link>
                  <a
                    href="/api/auth/logout"
-                   className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                   className={`block px-4 py-2 text-sm text-red-600 ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
                  >
                    Logout
                  </a>
@@ -202,7 +230,7 @@ export default function Header({ user }: HeaderProps) {
           <div className="lg:hidden ml-auto">
             <button
               type="button"
-              className={`${user ? 'bg-white' : 'bg-black'}  inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 `}
+              className={`${user ? (theme === 'dark' ? 'bg-gray-800' : 'bg-white') : 'bg-black'}  inline-flex items-center justify-center p-2 rounded-md ${theme === 'dark' ? 'text-gray-300 hover:text-gray-100' : 'text-gray-400 hover:text-gray-500'} `}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <span className="sr-only">Open main menu</span>
@@ -218,22 +246,22 @@ export default function Header({ user }: HeaderProps) {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
   <div className="lg:hidden">
-    <div className={`${user ? 'bg-white' : 'bg-black'} px-2 pt-2 mt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-500`}>
+    <div className={`${user ? (theme === 'dark' ? 'bg-gray-800' : 'bg-white') : 'bg-black'} px-2 pt-2 mt-2 pb-3 space-y-1 sm:px-3 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-500'}`}>
     
       {user && (
         <>
-          <Link href="/recipes" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500">
+          <Link href="/recipes" className={`block px-3 py-2 rounded-md text-base font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-500'}`}>
         Home
       </Link>
          
          
-          <Link href="/best-recipes" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
+          <Link href="/best-recipes" className={`block px-3 py-2 rounded-md text-base font-medium ${theme === 'dark' ? 'text-gray-300 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
            Best Recipes
           </Link>
-          <Link href="/stories" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
+          <Link href="/stories" className={`block px-3 py-2 rounded-md text-base font-medium ${theme === 'dark' ? 'text-gray-300 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
            Stories
           </Link>
-          <Link href="/chat" className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600">
+          <Link href="/chat" className={`block px-3 py-2 rounded-md text-base font-medium ${theme === 'dark' ? 'text-gray-300 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
            Chat
           </Link>
 
@@ -261,10 +289,10 @@ export default function Header({ user }: HeaderProps) {
 )}
           <div className="ml-3 flex items-center space-x-1">
             <div>
-              <div className="text-base font-medium text-gray-800"> {user.name === user.email ?  user.name.split('@')[0] : user.name}</div>
+              <div className={`text-base font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}> {user.name === user.email ?  user.name.split('@')[0] : user.name}</div>
             </div>
             <svg
-              className={`h-4 w-4 text-gray-500 transform transition-transform ${
+              className={`h-4 w-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'} transform transition-transform ${
                 mobileProfileOpen ? 'rotate-180' : 'rotate-0'
               }`}
               fill="none"
@@ -277,23 +305,23 @@ export default function Header({ user }: HeaderProps) {
           </div>
         </div>
         {mobileProfileOpen && (
-        <div className="mt-2 border-t border-gray-200 pt-2">
-           <Link href="/profile" className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-orange-600">
+        <div className={`mt-2 border-t pt-2 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
+           <Link href="/profile" className={`block px-3 py-2 text-base font-medium ${theme === 'dark' ? 'text-gray-100 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
             Profile
           </Link>
           
-          <Link href="/settings" className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-orange-600">
+          <Link href="/settings" className={`block px-3 py-2 text-base font-medium ${theme === 'dark' ? 'text-gray-100 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
             Settings
           </Link>
-          <Link href="/favorites" className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-orange-600">
+          <Link href="/favorites" className={`block px-3 py-2 text-base font-medium ${theme === 'dark' ? 'text-gray-100 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
             Favorites
           </Link>
-          <Link href="/contact" className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-orange-600">
+          <Link href="/contact" className={`block px-3 py-2 text-base font-medium ${theme === 'dark' ? 'text-gray-100 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
             Contact Us
           </Link>
           <a
             href="/api/auth/logout"
-            className="block px-3 py-2 text-base font-medium text-red-600 hover:bg-gray-100"
+            className={`block px-3 py-2 text-base font-medium text-red-600 ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'}`}
           >
             Logout
           </a>
@@ -307,11 +335,10 @@ export default function Header({ user }: HeaderProps) {
         <>
         <a
           href="/api/auth/login"
-          className="block px-3 py-2 rounded-md text-base font-medium text-gray-500 hover:text-orange-600"
-        >
+          className={`block px-3 py-2 rounded-md text-base font-medium ${theme === 'dark' ? 'text-gray-100 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
           Login
         </a>
-          <Link href="/contact" className="block px-3 py-2 text-base font-medium text-gray-500 hover:text-orange-600">
+          <Link href="/contact" className={`block px-3 py-2 text-base font-medium ${theme === 'dark' ? 'text-gray-100 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
           Contact Us
         </Link>
         </>

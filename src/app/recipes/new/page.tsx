@@ -9,6 +9,7 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import { FileSymlink } from 'lucide-react';
 import LoadingSpinner from '@/components/LoadingSpinner'
+import { useTheme } from '@/app/context/ThemeContext'
 
 export default function NewRecipe() {
   const { user, isLoading } = useUser()
@@ -28,9 +29,11 @@ export default function NewRecipe() {
     image_url: ''
   })
 
+  const { theme } = useTheme()
+
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <Header user={user} />
         <LoadingSpinner />
       </div>
@@ -39,11 +42,11 @@ export default function NewRecipe() {
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <Header user={user} />
         <div className="text-center py-12">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Please sign in</h1>
-          <p className="text-gray-600 mb-6">You need to be signed in to create a recipe.</p>
+          <h1 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Please sign in</h1>
+          <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-6`}>You need to be signed in to create a recipe.</p>
           <a
             href="/api/auth/login"
             className="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
@@ -158,20 +161,20 @@ export default function NewRecipe() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Header user={user} />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Share Your Recipe</h1>
+        <div className={`rounded-xl shadow-sm p-6 md:p-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          <h1 className={`text-3xl font-bold mb-8 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Share Your Recipe</h1>
           
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Basic Information */}
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
+              <h2 className={`text-xl font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Basic Information</h2>
               
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="title" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Recipe Title *
                 </label>
                 <input
@@ -181,13 +184,13 @@ export default function NewRecipe() {
                   value={formData.title}
                   onChange={handleInputChange}
                   required
-                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   placeholder="Enter a delicious recipe title"
                 />
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="description" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Description *
                 </label>
                 <textarea
@@ -197,13 +200,13 @@ export default function NewRecipe() {
                   onChange={handleInputChange}
                   required
                   rows={3}
-                  className="w-full px-3 py-2 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   placeholder="Describe your recipe and what makes it special"
                 />
               </div>
 
               <div >
-                <label htmlFor="image_url" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="image_url" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Image URL (optional)
                 </label>
                 <div className='flex items-center'>
@@ -213,10 +216,10 @@ export default function NewRecipe() {
                   name="image_url"
                   value={formData.image_url}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   placeholder="https://example.com/image.jpg"
                 />
-                <Link href={'https://postimages.org/'} target='_blanck'><FileSymlink className='text-gray-500 m-1'/></Link>
+                <Link href={'https://postimages.org/'} target='_blanck'><FileSymlink className={`m-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}/></Link>
                 </div>
                 
               </div>
@@ -225,11 +228,11 @@ export default function NewRecipe() {
 
             {/* Recipe Details */}
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Recipe Details</h2>
+              <h2 className={`text-xl font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Recipe Details</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className='text-gray-500'>
-                  <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-2">
+                <div >
+                  <label htmlFor="country" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Country *
                   </label>
                   <select
@@ -238,11 +241,11 @@ export default function NewRecipe() {
                     value={formData.country}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600' : 'border-gray-300'}`}
                   >
-                    <option className='text-black' value="">Select a country</option>
+                    <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="">Select a country</option>
                     {countries.map(country => (
-                      <option key={country.code} value={country.code}>
+                      <option key={country.code} value={country.code} className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`}>
                         {country.flag} {country.name}
                       </option>
                     ))}
@@ -250,7 +253,7 @@ export default function NewRecipe() {
                 </div>
 
                 <div>
-                  <label htmlFor="prep_time" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="prep_time" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Prep Time (minutes) *
                   </label>
                   <input
@@ -261,12 +264,12 @@ export default function NewRecipe() {
                     onChange={handleInputChange}
                     required
                     min="0"
-                    className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="cook_time" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="cook_time" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Cook Time (minutes) *
                   </label>
                   <input
@@ -277,46 +280,46 @@ export default function NewRecipe() {
                     onChange={handleInputChange}
                     required
                     min="0"
-                    className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   />
                 </div>
-                <div className='text-gray-500'>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <div>
+                <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Meal Type
                 </label>
                 <select
                   value={formData.type}
                   onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600' : 'border-gray-300'}`}
                   required
                 >
-                  <option value="Any">Any</option>
-                  <option value="Breakfast">🍳 Breakfast</option>
-                  <option value="Brunch">🥞 Brunch</option>
-                  <option value="Lunch">🥗 Lunch</option>
-                  <option value="Snack">🍿 Snack</option>
-                  <option value="Dinner">🍛 Dinner</option>
-                  <option value="Dessert">🍛 Dessert</option>
+                  <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Any">Any</option>
+                  <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Breakfast">🍳 Breakfast</option>
+                  <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Brunch">🥞 Brunch</option>
+                  <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Lunch">🥗 Lunch</option>
+                  <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Snack">🍿 Snack</option>
+                  <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Dinner">🍛 Dinner</option>
+                  <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Dessert">🍮 Dessert</option>
                 </select>
               </div>
-              <div className='text-gray-500'>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <div>
+                <label className={`block text-sm font-semibold mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Type
                 </label>
                 <select
                   value={formData.vtype}
                   onChange={(e) => setFormData(prev => ({ ...prev, vtype: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600' : 'border-gray-300'}`}
                   required
                 >
-                  <option value="Veg">Veg</option>
-                  <option value="Non-veg">Non-veg</option>
+                  <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Veg">Veg</option>
+                  <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Non-veg">Non-veg</option>
                 </select>
               </div>
               </div>
 
               <div>
-                <label htmlFor="servings" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="servings" className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                   Servings *
                 </label>
                 <input
@@ -327,14 +330,14 @@ export default function NewRecipe() {
                   onChange={handleInputChange}
                   required
                   min="1"
-                  className="w-full px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                 />
               </div>
             </div>
 
             {/* Ingredients */}
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Ingredients</h2>
+              <h2 className={`text-xl font-semibold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Ingredients</h2>
               
               {formData.ingredients.map((ingredient, index) => (
                 <div key={index} className="flex space-x-2">
@@ -343,7 +346,7 @@ export default function NewRecipe() {
                     value={ingredient}
                     onChange={(e) => handleArrayInputChange('ingredients', index, e.target.value)}
                     placeholder="Enter ingredient (e.g., 2 cups flour)"
-                    className="flex-1 px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                    className={`flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   />
                   {formData.ingredients.length > 1 && (
                     <button
@@ -368,11 +371,11 @@ export default function NewRecipe() {
 
             {/* Instructions */}
             <div className="space-y-6">
-              <h2 className="text-xl font-semibold text-gray-900">Instructions</h2>
+              <h2 className={`text-xl font-semibold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Instructions</h2>
               
               {formData.instructions.map((instruction, index) => (
                 <div key={index} className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className={`block text-sm font-medium ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     Step {index + 1}
                   </label>
                   <div className="flex space-x-2">
@@ -381,7 +384,7 @@ export default function NewRecipe() {
                       onChange={(e) => handleArrayInputChange('instructions', index, e.target.value)}
                       placeholder="Enter step instructions"
                       rows={2}
-                      className="flex-1 px-3 py-2 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                      className={`flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                     />
                     {formData.instructions.length > 1 && (
                       <button
@@ -406,11 +409,11 @@ export default function NewRecipe() {
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+            <div className={`flex justify-end space-x-4 pt-6 border-t ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
               <button
                 type="button"
                 onClick={() => router.back()}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                className={`px-6 py-3 border rounded-lg transition-colors ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 hover:bg-gray-600' : 'border-gray-300 text-gray-700 hover:bg-gray-50'}`}
               >
                 Cancel
               </button>

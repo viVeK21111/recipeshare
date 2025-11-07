@@ -19,6 +19,7 @@ import {
   DivideIcon
 } from '@heroicons/react/24/outline'
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
+import { useTheme } from '@/app/context/ThemeContext'
 
 export default function RecipeDetail() {
   const params = useParams() as { id?: string | string[] } | null
@@ -32,6 +33,7 @@ export default function RecipeDetail() {
   const [newComment, setNewComment] = useState('')
   const [submittingComment, setSubmittingComment] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
+  const { theme } = useTheme()
 
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
@@ -188,7 +190,7 @@ export default function RecipeDetail() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <Header user={user} />
         <LoadingSpinner />
       </div>
@@ -197,23 +199,23 @@ export default function RecipeDetail() {
 
   if (!recipe) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <Header user={user} />
         <div className="text-center py-12">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Recipe not found</h1>
-          <p className="text-gray-600">The recipe you're looking for doesn't exist.</p>
+          <h1 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Recipe not found</h1>
+          <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>The recipe you're looking for doesn't exist.</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Header user={user} />
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Recipe Header */}
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+        <div className={`rounded-xl shadow-sm overflow-hidden mb-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
          
             <div className="relative h-64 md:h-96 w-full">
               <img
@@ -227,13 +229,13 @@ export default function RecipeDetail() {
           <div className="p-6 md:p-8">
             <div className="flex-1 md:flex items-start justify-between mb-4">
               <div className="flex-1">
-                <h1 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
+                <h1 className={`text-2xl md:text-4xl font-bold mb-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
                   {recipe.title}
                 </h1>
-                <p className="md:text-lg text-gray-600">
+                <p className={`md:text-lg ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                   {recipe.description}
                 </p>
-                <div className='my-2 text-gray-500 flex items-center'>Best served for {recipe.type} 
+                <div className={`my-2 flex items-center ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>Best served for {recipe.type} 
                   <p
                 className={`w-2 h-2 ml-1 ${
                   recipe.vtype === 'Non-veg' ? 'bg-red-500' : 'bg-green-500'
@@ -244,29 +246,29 @@ export default function RecipeDetail() {
               <div className="flex items-center space-x-2 md:ml-4">
                 <button
                   onClick={handleLike}
-                  className="flex items-center space-x-2 px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors ${theme === 'dark' ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-300 hover:bg-gray-50'}`}
                 >
                   {isLiked ? (
                     <HeartSolidIcon className="h-5 w-5 text-red-500" />
                   ) : (
-                    <HeartIcon className="h-5 w-5 text-gray-600" />
+                    <HeartIcon className={`h-5 w-5 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`} />
                   )}
-                  <span className="font-medium text-black">{likesCount}</span>
+                  <span className={`font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>{likesCount}</span>
                 </button>
                 
                 <button
                 onClick={() => setShowPopup(!showPopup)}
-                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+                className={`p-2 rounded-lg border transition-colors ${theme === 'dark' ? 'border-gray-700 hover:bg-gray-700' : 'border-gray-300 hover:bg-gray-50'}`}
               >
-                <ShareIcon className="h-5 w-5 text-gray-600" />
+                <ShareIcon className={`h-5 w-5 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`} />
               </button>
 
               {showPopup && (
-                <div className="absolute top-10 right-10 z-10 bg-white border border-gray-300 rounded-lg shadow-md p-3 w-64">
+                <div className={`absolute top-10 right-10 z-10 border rounded-lg shadow-md p-3 w-64 ${theme === 'dark' ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}>
                   <button onClick={() => setShowPopup(!showPopup)}>
-                  <CircleX size={15} className='text-black flex ml-auto'/>
+                  <CircleX size={15} className={`flex ml-auto ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}/>
                   </button>
-                  <p className="text-sm text-gray-700 break-words">{currentUrl}</p>
+                  <p className={`text-sm break-words ${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'}`}>{currentUrl}</p>
                   <button
                     onClick={copyToClipboard}
                     className="mt-2 px-3 py-1 text-sm bg-orange-500 text-white rounded hover:bg-orange-600 transition-colors"
@@ -279,30 +281,30 @@ export default function RecipeDetail() {
             </div>
 
             {/* Recipe Meta */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-              <div className="flex items-center space-x-2 text-gray-600">
+            <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+              <div className="flex items-center space-x-2 text-sm">
                 <ClockIcon className="h-5 w-5" />
                 <span>{recipe.prep_time + recipe.cook_time} min</span>
               </div>
-              <div className="flex items-center space-x-2 text-gray-600">
+              <div className="flex items-center space-x-2 text-sm">
                 <UserGroupIcon className="h-5 w-5" />
                 <span>{recipe.servings} servings</span>
               </div>
-              <div className="flex items-center space-x-2 text-gray-600">
+              <div className="flex items-center space-x-2 text-sm">
                 <MapPinIcon className="h-5 w-5" />
                 <span className="flex items-center space-x-1">
                   <span>{getCountryFlag(recipe.country)}</span>
                   <span>{getCountryName(recipe.country)}</span>
                 </span>
               </div>
-              <div className="flex items-center space-x-2 text-gray-600">
+              <div className="flex items-center space-x-2 text-sm">
                 <ChatBubbleLeftIcon className="h-5 w-5" />
                 <span>{comments.length} comments</span>
               </div>
             </div>
 
             {/* Author */}
-            <div className="flex items-center space-x-3 pb-6 border-b border-gray-200">
+            <div className={`flex items-center space-x-3 pb-6 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
               {recipe.user?.avatar_url ? (
                 <img
                   src={recipe.user.avatar_url}
@@ -310,16 +312,17 @@ export default function RecipeDetail() {
                   className="w-10 h-10 rounded-full"
                 />
               ) : (
-                <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-medium text-gray-600">
-                    {recipe.user?.name === recipe.user?.email ? recipe.user?.name.split('@')[0] : recipe.user?.name.split('@')[0]}
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'}`}>
+                  <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-600'}`}>
+                    {recipe.user?.name?.charAt(0) || 'U'}
                   </span>
                 </div>
               )}
               <div>
-                <p className="font-medium text-gray-900">{recipe.user?.name === recipe.user?.email ? recipe.user?.name.split('@')[0] : recipe.user?.name.split('@')[0]}
+                <p className={`font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
+                {recipe.user?.name === recipe.user?.email ? recipe.user?.name.split('@')[0] : recipe.user?.name.split('@')[0]}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
                   {new Date(recipe.created_at).toLocaleDateString()}
                 </p>
               </div>
@@ -330,28 +333,28 @@ export default function RecipeDetail() {
         {/* Recipe Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Ingredients */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Ingredients</h2>
+          <div className={`rounded-xl shadow-sm p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+            <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Ingredients</h2>
             <ul className="space-y-2">
               {recipe.ingredients.map((ingredient, index) => (
                 <li key={index} className="flex items-start space-x-3">
                   <span className="text-orange-500 mt-1">•</span>
-                  <span className="text-gray-700">{ingredient}</span>
+                  <span className={`${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'}`}>{ingredient}</span>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* Instructions */}
-          <div className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Instructions</h2>
+          <div className={`rounded-xl shadow-sm p-6 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+            <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Instructions</h2>
             <ol className="space-y-4">
               {recipe.instructions.map((instruction, index) => (
                 <li key={index} className="flex items-start space-x-3">
                   <span className="flex-shrink-0 w-6 h-6 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
                     {index + 1}
                   </span>
-                  <span className="text-gray-700">{instruction}</span>
+                  <span className={`${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'}`}>{instruction}</span>
                 </li>
               ))}
             </ol>
@@ -359,8 +362,8 @@ export default function RecipeDetail() {
         </div>
 
         {/* Comments Section */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mt-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Comments</h2>
+        <div className={`rounded-xl shadow-sm p-6 mt-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
+          <h2 className={`text-2xl font-bold mb-6 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Comments</h2>
           
           {/* Add Comment Form */}
           {user ? (
@@ -370,7 +373,7 @@ export default function RecipeDetail() {
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
                   placeholder="Share your thoughts about this recipe..."
-                  className="flex-1 p-3 border text-black border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none"
+                  className={`flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 resize-none ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
                   rows={3}
                 />
                 <button
@@ -383,8 +386,8 @@ export default function RecipeDetail() {
               </div>
             </form>
           ) : (
-            <div className="mb-6 p-4 bg-gray-50 rounded-lg text-center">
-              <p className="text-gray-600 mb-2">Want to join the conversation?</p>
+            <div className={`mb-6 p-4 rounded-lg text-center ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
+              <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-2`}>Want to join the conversation?</p>
               <a
                 href="/api/auth/login"
                 className="text-orange-600 hover:text-orange-700 font-medium"
@@ -397,10 +400,10 @@ export default function RecipeDetail() {
           {/* Comments List */}
           <div className="space-y-4">
             {comments.length === 0 ? (
-              <p className="text-gray-500 text-center py-8">No comments yet. Be the first to comment!</p>
+              <p className={`text-center py-8 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>No comments yet. Be the first to comment!</p>
             ) : (
               comments.map((comment) => (
-                <div key={comment.id} className="flex space-x-3 p-4 bg-gray-50 rounded-lg">
+                <div key={comment.id} className={`flex space-x-3 p-4 rounded-lg ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-50'}`}>
                   {comment.user?.avatar_url ? (
                     <img
                       src={comment.user.avatar_url}
@@ -408,22 +411,22 @@ export default function RecipeDetail() {
                       className="w-8 h-8 rounded-full"
                     />
                   ) : (
-                    <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                      <span className="text-xs font-medium text-gray-600">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${theme === 'dark' ? 'bg-gray-600' : 'bg-gray-300'}`}>
+                      <span className={`text-xs font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-600'}`}>
                         {comment.user?.name?.charAt(0) || 'U'}
                       </span>
                     </div>
                   )}
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-medium text-gray-900">
+                      <span className={`font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
                         {comment.user?.name || 'Anonymous'}
                       </span>
-                      <span className="text-sm text-gray-500">
+                      <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
                         {new Date(comment.created_at).toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-gray-700">{comment.content}</p>
+                    <p className={`${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'}`}>{comment.content}</p>
                   </div>
                 </div>
               ))

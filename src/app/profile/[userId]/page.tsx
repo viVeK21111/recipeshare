@@ -15,6 +15,7 @@ import {
   CheckIcon
 } from '@heroicons/react/24/outline'
 import Image from 'next/image'
+import { useTheme } from '@/app/context/ThemeContext'
 
 export default function UserProfilePage() {
   const params = useParams()
@@ -40,6 +41,7 @@ export default function UserProfilePage() {
   const [loading, setLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
   const [activeTab, setActiveTab] = useState<'recipes'>('recipes')
+  const { theme } = useTheme()
 
   
 
@@ -186,7 +188,7 @@ export default function UserProfilePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <Header user={currentUser} />
         <div className="flex items-center justify-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange-600 border-t-transparent"></div>
@@ -197,10 +199,10 @@ export default function UserProfilePage() {
 
   if (!profileUser) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <Header user={currentUser} />
         <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">User not found</h2>
+          <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>User not found</h2>
           <button
             onClick={() => router.back()}
             className="px-6 py-3 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700"
@@ -213,12 +215,12 @@ export default function UserProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Header user={currentUser} />
       
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Profile Header */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <div className={`rounded-xl shadow-sm border p-6 mb-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
           <div className="flex items-start justify-between">
             <div className="md:flex items-center space-x-6">
             {profileUser.avatar_url ? (
@@ -240,17 +242,17 @@ export default function UserProfilePage() {
               )}
               
               <div className="flex-1">
-                <h1 className="text-2xl md:text-3xl mt-2 md:mt-0 font-bold text-gray-900 mb-2">
+                <h1 className={`text-2xl md:text-3xl mt-2 md:mt-0 font-bold mb-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
                 {profileUser.name === profileUser.email ?  profileUser.name.split('@')[0] : profileUser.name}
                 </h1>
                 
                 {profileUser.bio && (
-                  <p className="text-gray-700 mb-4 max-w-2xl">
+                  <p className={`mb-4 max-w-2xl ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
                     {profileUser.bio}
                   </p>
                 )}
 
-                <div className="flex items-center space-x-6 text-sm text-gray-600">
+                <div className={`flex items-center space-x-6 text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                   {profileUser.location && (
                     <div className="flex items-center space-x-1">
                       <MapPinIcon className="h-4 w-4" />
@@ -273,12 +275,12 @@ export default function UserProfilePage() {
                 {/* Stats */}
                 <div className="flex items-center space-x-6 mt-4">
                   <div>
-                    <span className="font-bold text-gray-900">{recipes.length}</span>
-                    <span className="text-gray-600 ml-1">Recipes</span>
+                    <span className={`font-bold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{recipes.length}</span>
+                    <span className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} ml-1`}>Recipes</span>
                   </div>
                   <div>
-                    <span className="font-bold text-gray-900">{friendsCount}</span>
-                    <span className="text-gray-600 ml-1">Friends</span>
+                    <span className={`font-bold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>{friendsCount}</span>
+                    <span className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} ml-1`}>Friends</span>
                   </div>
                 </div>
               </div>
@@ -291,9 +293,9 @@ export default function UserProfilePage() {
                 disabled={isProcessing}
                 className={`flex items-center space-x-2 px-6 py-2.5 rounded-lg font-semibold transition-colors ${
                   friendshipStatus === 'friends'
-                    ? 'bg-gray-200 text-gray-700 hover:bg-red-50 hover:text-red-600'
+                    ? (theme === 'dark' ? 'bg-gray-700 text-gray-100 hover:bg-red-600 hover:text-white' : 'bg-gray-200 text-gray-700 hover:bg-red-50 hover:text-red-600')
                     : friendshipStatus === 'pending_sent'
-                    ? 'bg-gray-200 text-gray-700 cursor-not-allowed'
+                    ? (theme === 'dark' ? 'bg-gray-700 text-gray-100 cursor-not-allowed' : 'bg-gray-200 text-gray-700 cursor-not-allowed')
                     : 'bg-orange-600 text-white hover:bg-orange-700'
                 } ${isProcessing ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
@@ -306,7 +308,7 @@ export default function UserProfilePage() {
 
         {/* Recipes Grid */}
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Recipes</h2>
+          <h2 className={`text-2xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>Recipes</h2>
           {recipes.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recipes.map((recipe) => (
@@ -314,8 +316,8 @@ export default function UserProfilePage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-              <p className="text-gray-500">No recipes yet</p>
+            <div className={`text-center py-12 rounded-lg border ${theme === 'dark' ? 'bg-gray-800 border-gray-700 text-gray-300' : 'bg-white border-gray-200 text-gray-500'}`}>
+              <p>No recipes yet</p>
             </div>
           )}
         </div>

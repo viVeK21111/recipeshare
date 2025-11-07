@@ -7,11 +7,13 @@ import { supabase, Recipe } from '@/lib/supabase'
 import Header from '@/components/Header'
 import RecipePost from '@/components/RecipePost'
 import RecipeFav from '@/components/RecipeFav'
+import { useTheme } from '@/app/context/ThemeContext'
 
 export default function FavoritesPage() {
   const { user } = useUser()
   const [recipes, setRecipes] = useState<Recipe[]>([])
   const [loading, setLoading] = useState(true)
+  const { theme } = useTheme()
 
   useEffect(() => {
     if (user) {
@@ -79,13 +81,13 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Header user={user} />
       <main>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">My Favorites</h1>
-            <p className="text-gray-600">
+            <h1 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>My Favorites</h1>
+            <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
               Recipes you've saved for later • {recipes.length} {recipes.length === 1 ? 'recipe' : 'recipes'}
             </p>
           </div>
@@ -106,10 +108,10 @@ export default function FavoritesPage() {
 
 
           {!loading && recipes.length === 0 && (
-            <div className="text-center py-20">
+            <div className={`text-center py-20 ${theme === 'dark' ? 'bg-gray-800 text-gray-300' : 'bg-white text-gray-500'} rounded-lg border border-gray-200`}>
               <div className="text-6xl mb-4">📖</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No favorites yet</h3>
-              <p className="text-gray-600 mb-6">
+              <h3 className={`text-xl font-semibold mb-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>No favorites yet</h3>
+              <p className={`mb-6 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
                 Start exploring recipes and save your favorites!
               </p>
               <a
