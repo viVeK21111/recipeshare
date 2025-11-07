@@ -188,7 +188,7 @@ export default function SearchPage() {
                     {searchResults.users.map((foundUser) => (
                       <Link
                         key={foundUser.id}
-                        href={`/profile/${foundUser.id}`}
+                        href={user?.email === foundUser.email ?`/profile` : `/profile/${foundUser.id}`}
                         className="block bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md hover:border-orange-300 transition-all"
                       >
                         <div className="flex items-center space-x-4">
