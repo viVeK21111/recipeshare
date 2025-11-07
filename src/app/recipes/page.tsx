@@ -16,7 +16,7 @@ export default function RecipesPage() {
   const [showMobileFilters, setShowMobileFilters] = useState(false)
 
   return (
-    <div className="md:h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen md:h-screen bg-gray-50 flex flex-col">
       <Header user={user} />
 
       <main className="flex-1 min-h-0 md:flex md:overflow-hidden">
