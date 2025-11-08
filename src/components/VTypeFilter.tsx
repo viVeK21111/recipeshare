@@ -7,6 +7,7 @@ import { useTheme } from '@/app/context/ThemeContext'
 const MEAL_TYPES = [
     { value: 'Veg', label: 'Veg', emoji: '🥦' },
     { value: 'Non-veg', label: 'Non-veg', emoji: '🥩' },
+    { value: 'Vegan' , label:'Vegan' , emoji: '🥗'}
   ]
 
 interface TypeFilterProps {

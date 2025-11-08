@@ -314,6 +314,7 @@ export default function NewRecipe() {
                 >
                   <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Veg">Veg</option>
                   <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Non-veg">Non-veg</option>
+                  <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Vegan">Vegan</option>
                 </select>
               </div>
               </div>

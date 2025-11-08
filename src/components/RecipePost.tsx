@@ -370,7 +370,7 @@ export default function RecipePost({ recipe }: RecipePostProps) {
         </div>
         <div
         className={`w-2 h-2 ml-1 ${
-          recipe.vtype === 'Non-veg' ? 'bg-red-500' : 'bg-green-500'
+          recipe.vtype === 'Non-veg' ? 'bg-red-500' : recipe.vtype === 'Vegan' ? 'bg-white' : 'bg-green-500'
         }`}
       ></div>
       </div>

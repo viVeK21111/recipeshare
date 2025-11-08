@@ -30,42 +30,44 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  color-scheme: dark; /* Force dark scrollbar rendering for browsers that support it */
+}
+
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark p {
   color: var(--foreground);
 }
 
-/* Scrollbar Styling for light mode */
+/* Scrollbar Styling - Universal (for both light and dark modes) */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px; /* Make scrollbar thinner */
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background-color: transparent; /* Keep this transparent to allow body background to show */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 6px;
+  background: #888; /* Gray thumb in light mode */
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #881818;
+  background: #555;
 }
 
-/* Scrollbar Styling for dark mode */
-.dark::-webkit-scrollbar {
-  width: 12px;
-}
-
+/* Dark Mode Scrollbar Styling */
 .dark::-webkit-scrollbar-track {
-  background: #0a0a0a; /* A very dark gray, almost black, for the scrollbar track in dark mode */
+  background-color: #1a1a1a !important; /* Explicitly dark background for track in dark mode */
 }
 
 .dark::-webkit-scrollbar-thumb {
-  background: #333; /* Dark gray for the thumb */
-  border-radius: 6px;
+  background: #444; /* Darker gray for thumb in dark mode */
+  border-radius: 4px;
 }
 
 .dark::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Slightly lighter gray on hover */
+  background: #666; /* Slightly lighter dark gray on hover */
 }
