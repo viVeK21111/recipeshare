@@ -44,7 +44,7 @@ export default function Header({ user }: HeaderProps) {
   
 
   return (
-    <header className={theme === 'dark' ? `sticky top-0 z-50 bg-black border-b shadow-sm border-gray-700 ` : `sticky top-0 z-50 bg-white border-b shadow-sm border-gray-200 `}>
+    <header className={!user ? `sticky top-0 z-50 bg-black border-b shadow-sm border-gray-700` : theme === 'dark' ? `sticky top-0 z-50 bg-black border-b shadow-sm border-gray-700 ` : `sticky top-0 z-50 bg-white border-b shadow-sm border-gray-200 `}>
       <nav className="max-w-full px-6">
         <div className="flex  items-center h-16">
 
@@ -102,9 +102,10 @@ export default function Header({ user }: HeaderProps) {
           {/* User Menu */}
           <div className={user ? 'block' : 'ml-auto block'}>
             <div className="ml-6 m-1 flex items-center">
+              
             <button
                 onClick={toggleTheme}
-                className="p-2 rounded-md focus:outline-none transition-colors mr-2"
+                className={user ? `p-2 rounded-md focus:outline-none transition-colors mr-2` : `hidden`}
               >
                 {theme === 'dark' ? (
                   <svg className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -167,7 +168,7 @@ export default function Header({ user }: HeaderProps) {
                     <p className="hidden md:block">Search</p>
                   </Link>
                   <Link
-                  className='hidden lg:flex items-center hover:text-orange-600 text-gray-800 p-2'
+                  className='hidden lg:flex items-center hover:text-orange-600 dark:text-gray-600 text-gray-800 p-2'
                     href="/chat"
                   >
                     <MessageCircleMore className=" md:mr-2" />
@@ -195,7 +196,7 @@ export default function Header({ user }: HeaderProps) {
                   className="rounded-full"
                 />
               )}
-               <span className="text-sm font-medium text-gray-700"> {user.name === user.email ?  user.name.split('@')[0] : user.name}</span>
+               <span className={theme === 'dark' ? `text-sm font-medium text-gray-400` : `text-sm font-medium  text-gray-700`}> {user.name === user.email ?  user.name.split('@')[0] : user.name}</span>
              </button>
 
              {profileOpen && (
