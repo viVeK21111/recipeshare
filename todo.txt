@@ -1,7 +1,7 @@
 ﻿
 scroll position maintain after coming back from recipe
 add more filter 
-  - gluten free, vegan
+  - gluten free
 /settings page
  - delete account
  - preferences

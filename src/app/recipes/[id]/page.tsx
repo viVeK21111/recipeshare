@@ -238,7 +238,7 @@ export default function RecipeDetail() {
                 <div className={`my-2 flex items-center ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>Best served for {recipe.type} 
                   <p
                 className={`w-2 h-2 ml-1 ${
-                  recipe.vtype === 'Non-veg' ? 'bg-red-500' : 'bg-green-500'
+                  recipe.vtype === 'Non-veg' ? 'bg-red-500' : recipe.vtype === 'Vegan' ? 'bg-yellow-400' : 'bg-green-500'
                 }`}
               ></p></div>
               </div>
