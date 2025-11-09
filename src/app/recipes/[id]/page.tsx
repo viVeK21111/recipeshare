@@ -16,9 +16,10 @@ import {
   MapPinIcon,
   ShareIcon,
   PencilIcon,
-  DivideIcon
+  DivideIcon,
+  BookmarkIcon
 } from '@heroicons/react/24/outline'
-import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid'
+import { HeartIcon as HeartSolidIcon ,   BookmarkIcon as BookmarkSolidIcon} from '@heroicons/react/24/solid'
 import { useTheme } from '@/app/context/ThemeContext'
 
 export default function RecipeDetail() {
@@ -34,6 +35,9 @@ export default function RecipeDetail() {
   const [submittingComment, setSubmittingComment] = useState(false)
   const [showPopup, setShowPopup] = useState(false)
   const { theme } = useTheme()
+  const [isFavorited, setIsFavorited] = useState(false)
+  const [isProcessingFavorite, setIsProcessingFavorite] = useState(false)
+
 
   const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
@@ -45,8 +49,130 @@ export default function RecipeDetail() {
     if (recipeId) {
       fetchRecipe()
       fetchComments()
+    
     }
   }, [recipeId])
+
+  useEffect(() => {
+    if (user) {
+      checkIfLiked()
+      checkIfFavorited()
+    }
+  }, [recipeId])
+
+  const checkIfLiked = async () => {
+    if (!user) return
+    
+    try {
+      const { data, error } = await supabase
+        .from('likes')
+        .select('id')
+        .eq('user_id', user.sub)
+        .eq('recipe_id', recipeId)
+        .maybeSingle()
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error checking like:', error)
+        return
+      }
+
+      setIsLiked(!!data)
+    } catch (error) {
+      console.error('Error in checkIfLiked:', error)
+    }
+  }
+
+  const checkIfFavorited = async () => {
+    if (!user) return
+    
+    try {
+      const { data, error } = await supabase
+        .from('favorites')
+        .select('id')
+        .eq('user_id', user.sub)
+        .eq('recipe_id', recipeId)
+        .maybeSingle()
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error checking favorite:', error)
+        return
+      }
+
+      setIsFavorited(!!data)
+    } catch (error) {
+      console.error('Error in checkIfFavorited:', error)
+    }
+  }
+
+  const handleFavorite = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    if (!user) {
+      window.location.href = '/api/auth/login'
+      return
+    }
+
+    if (isProcessingFavorite) return
+    setIsProcessingFavorite(true)
+
+    try {
+      if (isFavorited) {
+        // Remove from favorites
+        const { error } = await supabase
+          .from('favorites')
+          .delete()
+          .eq('user_id', user.sub)
+          .eq('recipe_id', recipeId)
+
+        if (error) {
+          console.error('Delete favorite error:', error)
+          throw error
+        }
+        
+        setIsFavorited(false)
+        console.log('Removed from favorites')
+      } else {
+        // Add to favorites
+        const { data, error } = await supabase
+          .from('favorites')
+          .insert({
+            user_id: user.sub,
+            recipe_id: recipeId
+          })
+          .select()
+
+        if (error) {
+          if (error.code === '23505') {
+            setIsFavorited(true)
+            console.log('Already favorited')
+          } else {
+            console.error('Add favorite error:', error)
+            throw error
+          }
+        } else {
+          setIsFavorited(true)
+          console.log('Added to favorites')
+        }
+      }
+    } catch (error: any) {
+      console.error('Error toggling favorite:', error)
+      
+      let errorMessage = 'Failed to update favorites. '
+      if (error.code === '42501') {
+        errorMessage += 'Permission denied. Please check your database policies.'
+      } else if (error.code === '23505') {
+        errorMessage += 'This recipe is already in your favorites.'
+        setIsFavorited(true)
+      } else {
+        errorMessage += 'Please try again.'
+      }
+      
+      alert(errorMessage)
+    } finally {
+      setIsProcessingFavorite(false)
+    }
+  }
 
   const fetchRecipe = async () => {
     try {
@@ -255,6 +381,21 @@ export default function RecipeDetail() {
                   )}
                   <span className={`font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-black'}`}>{likesCount}</span>
                 </button>
+
+                <button
+                onClick={handleFavorite}
+                disabled={isProcessingFavorite}
+                className={`p-2 rounded-full transition-colors ${theme === 'dark' ? 'hover:bg-gray-700' : 'hover:bg-gray-100'} ${
+                  isProcessingFavorite ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                title={isFavorited ? "Remove from favorites" : "Add to favorites"}
+              >
+                {isFavorited ? (
+                  <BookmarkSolidIcon className="h-6 w-6 text-orange-600" />
+                ) : (
+                  <BookmarkIcon className={`h-6 w-6 ${theme === 'dark' ? 'text-gray-300 hover:text-orange-600' : 'text-gray-600 hover:text-orange-600'}`} />
+                )}
+              </button>
                 
                 <button
                 onClick={() => setShowPopup(!showPopup)}
@@ -407,20 +548,20 @@ export default function RecipeDetail() {
                   {comment.user?.avatar_url ? (
                     <img
                       src={comment.user.avatar_url}
-                      alt={comment.user.name}
+                      alt={comment.user.name.split('@')[0]}
                       className="w-8 h-8 rounded-full"
                     />
                   ) : (
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${theme === 'dark' ? 'bg-gray-600' : 'bg-gray-300'}`}>
                       <span className={`text-xs font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-600'}`}>
-                        {comment.user?.name?.charAt(0) || 'U'}
+                        {comment.user?.name?.split('@')[0] || 'U'}
                       </span>
                     </div>
                   )}
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
                       <span className={`font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
-                        {comment.user?.name || 'Anonymous'}
+                        {comment.user?.name.split('@')[0] || 'Anonymous'}
                       </span>
                       <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
                         {new Date(comment.created_at).toLocaleDateString()}

@@ -114,17 +114,7 @@ export default function RecipeCard({ recipe }: RecipeCardProps) {
             <span>{getCountryName(recipe.country)}</span>
           </div>
 
-          {/* Like Button */}
-          <button
-            onClick={handleLike}
-            className={`absolute top-3 right-3 rounded-full p-2 backdrop-blur-sm hover:bg-opacity-100 transition-all duration-200 ${theme === 'dark' ? 'bg-gray-700 bg-opacity-90' : 'bg-white bg-opacity-90'}`}
-          >
-            {isLiked ? (
-              <HeartSolidIcon className="h-5 w-5 text-red-500" />
-            ) : (
-              <HeartIcon className={`h-5 w-5 ${theme === 'dark' ? 'text-gray-300 hover:text-red-500' : 'text-gray-600 hover:text-red-500'}`} />
-            )}
-          </button>
+        
         </div>
 
         {/* Recipe Content */}
