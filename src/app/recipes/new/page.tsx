@@ -184,7 +184,7 @@ export default function NewRecipe() {
                   value={formData.title}
                   onChange={handleInputChange}
                   required
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300'}`}
                   placeholder="Enter a delicious recipe title"
                 />
               </div>
@@ -200,7 +200,7 @@ export default function NewRecipe() {
                   onChange={handleInputChange}
                   required
                   rows={3}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300'}`}
                   placeholder="Describe your recipe and what makes it special"
                 />
               </div>
@@ -216,7 +216,7 @@ export default function NewRecipe() {
                   name="image_url"
                   value={formData.image_url}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'text-black border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300'}`}
                   placeholder="https://example.com/image.jpg"
                 />
                 <Link href={'https://postimages.org/'} target='_blanck'><FileSymlink className={`m-1 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}/></Link>
@@ -241,11 +241,11 @@ export default function NewRecipe() {
                     value={formData.country}
                     onChange={handleInputChange}
                     required
-                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600' : 'border-gray-300'}`}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-400 border-gray-600' : 'bg-white text-gray-500 border-gray-300'}`}
                   >
-                    <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="">Select a country</option>
+                    <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-400' : 'bg-white text-gray-500'}`} value="">Select a country</option>
                     {countries.map(country => (
-                      <option key={country.code} value={country.code} className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`}>
+                      <option key={country.code} value={country.code} className={`${theme === 'dark' ? 'bg-gray-700 text-gray-400' : 'bg-white text-gray-500'}`}>
                         {country.flag} {country.name}
                       </option>
                     ))}
@@ -290,7 +290,7 @@ export default function NewRecipe() {
                 <select
                   value={formData.type}
                   onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value }))}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600' : 'border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-400 border-gray-600' : 'bg-white text-gray-500 border-gray-300'}`}
                   required
                 >
                   <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Any">Any</option>
@@ -309,7 +309,7 @@ export default function NewRecipe() {
                 <select
                   value={formData.vtype}
                   onChange={(e) => setFormData(prev => ({ ...prev, vtype: e.target.value }))}
-                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600' : 'border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-400 border-gray-600' : 'bg-white text-gray-500 border-gray-300'}`}
                   required
                 >
                   <option className={`${theme === 'dark' ? 'bg-gray-700 text-gray-100' : 'text-black'}`} value="Veg">Veg</option>

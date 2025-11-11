@@ -2,6 +2,7 @@
 scroll position maintain after coming back from recipe
 add more filter 
   - gluten free
+nutrition values for recipes
 /settings page
  - delete account
  - preferences
@@ -18,6 +19,7 @@ private and public accounts
 following posts
 stories 
 recipe of the day
+country wise brest recipes
 recent recipes for new users
 best recipes page public 
 verifying whether pics are cooking ones or not
