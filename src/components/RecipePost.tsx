@@ -409,6 +409,18 @@ export default function RecipePost({ recipe }: RecipePostProps) {
         {/* View Full Recipe Button */}
         <Link
           href={`/recipes/${recipe.id}`}
+          onClick={(e) => {
+            // Save scroll position before navigation
+            const scrollContainer = document.querySelector('section[data-scroll-container="recipes"]') as HTMLElement
+            if (scrollContainer) {
+              const isDesktop = window.matchMedia('(min-width: 768px)').matches
+              const scrollPosition = isDesktop 
+                ? scrollContainer.scrollTop 
+                : window.scrollY
+              sessionStorage.setItem('recipes-scroll-position', String(scrollPosition))
+              sessionStorage.setItem('recipes-should-restore', 'true')
+            }
+          }}
           className="block w-full text-center py-2.5 bg-orange-600 text-white font-semibold rounded-lg hover:bg-orange-700 transition-colors"
         >
           View Full Recipe

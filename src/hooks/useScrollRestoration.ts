@@ -21,9 +21,17 @@ function useScrollRestoration(
       }
     };
 
-    // ---- Restore on mount (after paint)
+    // ---- Restore on mount (after paint and content load)
     const saved = Number(sessionStorage.getItem(storageKey) || 0);
-    let raf = requestAnimationFrame(() => setPos(saved));
+    // Use multiple animation frames to ensure content is loaded
+    let raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // Small delay to ensure content is rendered
+        setTimeout(() => {
+          setPos(saved);
+        }, 50);
+      });
+    });
 
     // ---- Save before we leave / hide / refresh
     const save = () => {

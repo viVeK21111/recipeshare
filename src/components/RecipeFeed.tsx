@@ -10,11 +10,12 @@ interface RecipeFeedProps {
   countryFilters: string[] // Changed from string to string[]
   typeFilters: string[]
   vtypeFilters: String[]
+  onLoadComplete?: () => void
 }
 
 const RECIPES_PER_PAGE = 20
 
-export default function RecipeFeed({ countryFilters,typeFilters,vtypeFilters }: RecipeFeedProps) {
+export default function RecipeFeed({ countryFilters,typeFilters,vtypeFilters, onLoadComplete }: RecipeFeedProps) {
   const [recipes, setRecipes] = useState<Recipe[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -72,6 +73,13 @@ export default function RecipeFeed({ countryFilters,typeFilters,vtypeFilters }: 
       setError('Failed to load recipes. Please try again.')
     } finally {
       setLoading(false)
+      // Notify parent that loading is complete
+      if (onLoadComplete) {
+        // Small delay to ensure DOM is updated
+        setTimeout(() => {
+          onLoadComplete()
+        }, 50)
+      }
     }
   }
 

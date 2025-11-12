@@ -1,27 +1,117 @@
 'use client'
 
-import { useState, useRef} from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useRef, useEffect} from 'react'
+import { useRouter, usePathname } from 'next/navigation'
 import Header from '@/components/Header'
 import CountryFilter from '@/components/CountryFilter'
 import TypeFilter from '@/components/TypeFilter'
 import VTypeFilter from '@/components/VTypeFilter'
 import RecipeFeed from '@/components/RecipeFeed'
 import { useUser } from '@auth0/nextjs-auth0/client'
-import useScrollRestoration from '../../hooks/useScrollRestoration'
 import { useTheme } from '@/app/context/ThemeContext'
 
 export default function RecipesPage() {
   const { user } = useUser()
   const router = useRouter()
+  const pathname = usePathname()
   const scrollContainerRef = useRef<HTMLElement>(null!)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]) 
   const [selectedvType, setSelectedvType] = useState<string[]>([]) 
   const [showMobileFilters, setShowMobileFilters] = useState(false)
+  const [feedLoaded, setFeedLoaded] = useState(false)
   const { theme } = useTheme()
   
-  useScrollRestoration(scrollContainerRef, 'recipes-scroll-position')
+  // Reset feedLoaded when filters change
+  useEffect(() => {
+    setFeedLoaded(false)
+  }, [selectedCountries, selectedTypes, selectedvType])
+  
+  // Save scroll position before leaving
+  useEffect(() => {
+    const saveScrollPosition = () => {
+      if (scrollContainerRef.current && pathname === '/recipes') {
+        const isDesktop = window.matchMedia('(min-width: 768px)').matches
+        const scrollPosition = isDesktop && scrollContainerRef.current
+          ? scrollContainerRef.current.scrollTop
+          : window.scrollY
+        sessionStorage.setItem('recipes-scroll-position', String(scrollPosition))
+        // Only set restore flag if we're on recipes page (not when navigating away due to filter change)
+        // The flag will be set by the Link onClick when clicking "View Full Recipe"
+      }
+    }
+
+    // Save on visibility change and page hide
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        saveScrollPosition()
+      }
+    }
+
+    const handleBeforeUnload = () => {
+      saveScrollPosition()
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    window.addEventListener('pagehide', saveScrollPosition)
+
+    return () => {
+      saveScrollPosition()
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+      window.removeEventListener('pagehide', saveScrollPosition)
+    }
+  }, [pathname])
+
+  // Restore scroll position after feed loads
+  useEffect(() => {
+    if (feedLoaded && scrollContainerRef.current && pathname === '/recipes') {
+      const saved = sessionStorage.getItem('recipes-scroll-position')
+      const shouldRestore = sessionStorage.getItem('recipes-should-restore') === 'true'
+      
+      if (saved && shouldRestore) {
+        const scrollPosition = Number(saved)
+        const isDesktop = window.matchMedia('(min-width: 768px)').matches
+        
+        // Wait for content to be fully rendered
+        const restoreScroll = () => {
+          if (isDesktop && scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = scrollPosition
+          } else {
+            window.scrollTo(0, scrollPosition)
+          }
+          // Clear the restore flag after restoring
+          sessionStorage.removeItem('recipes-should-restore')
+        }
+
+        // Use multiple delays to ensure content is rendered
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              restoreScroll()
+            }, 150)
+          })
+        })
+      } else if (!shouldRestore && saved) {
+        // If we shouldn't restore (e.g., filter change or initial load), clear saved position
+        sessionStorage.removeItem('recipes-scroll-position')
+      }
+    }
+  }, [feedLoaded, pathname])
+  
+  // Track previous pathname to detect navigation back from recipe detail
+  useEffect(() => {
+    const prevPath = sessionStorage.getItem('recipes-prev-path')
+    if (prevPath && prevPath.startsWith('/recipes/') && pathname === '/recipes') {
+      // We came back from a recipe detail page, set restore flag
+      sessionStorage.setItem('recipes-should-restore', 'true')
+    }
+    // Save current path for next time
+    if (pathname) {
+      sessionStorage.setItem('recipes-prev-path', pathname)
+    }
+  }, [pathname])
 
   return (
     <div className={`min-h-screen md:h-screen ${theme === 'dark' ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'} flex flex-col`}>
@@ -93,12 +183,14 @@ export default function RecipesPage() {
         {/* Recipe feed */}
         <section
         ref={scrollContainerRef}
+        data-scroll-container="recipes"
          className="flex-1 p-4 md:p-6 overflow-visible md:overflow-auto">
           <div className="max-w-4xl mx-auto">
             <RecipeFeed 
               countryFilters={selectedCountries}
               typeFilters={selectedTypes}
               vtypeFilters={selectedvType}
+              onLoadComplete={() => setFeedLoaded(true)}
             />
           </div>
         </section>

@@ -2,7 +2,7 @@
 scroll position maintain after coming back from recipe
 add more filter 
   - gluten free
-nutrition values for recipes
+live like count update and other count
 following and followers
 /settings page
  - delete account
