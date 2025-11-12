@@ -3,6 +3,7 @@ scroll position maintain after coming back from recipe
 add more filter 
   - gluten free
 nutrition values for recipes
+following and followers
 /settings page
  - delete account
  - preferences
@@ -10,7 +11,7 @@ changable user profile pic
 red dot on profile for friend new request
 down navbar for mobile screens
 dark mode
-
+AI chat bot for recipes
 
 
 when many users:
@@ -18,6 +19,7 @@ when many users:
 private and public accounts
 following posts
 stories 
+shorts
 recipe of the day
 country wise brest recipes
 recent recipes for new users

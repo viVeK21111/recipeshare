@@ -33,6 +33,13 @@ export interface Recipe {
   user_id: string
   created_at: string
   updated_at: string
+  calories?: number
+  protein?: number
+  carbs?: number
+  fat?: number
+  fiber?: number
+  sugar?: number
+  sodium?: number
   user?: User
   likes_count: number
   comments_count: number

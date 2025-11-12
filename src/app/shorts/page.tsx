@@ -8,10 +8,10 @@ export default function NotFound() {
   return (
     <div className={`min-h-screen flex items-center justify-center px-4 ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <div className="text-center">
-        <h1 className={`text-6xl font-bold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>404</h1>
-        <h2 className={`text-2xl font-semibold mb-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>Page Not Found</h2>
-        <p className={`mb-8 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-          Sorry, we couldn't find the page you're looking for.
+        
+        <h2 className={`text-2xl font-semibold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-700'}`}>Coming soon</h2>
+        <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} mb-8`}>
+          This feature is not available yet.
         </p>
         <Link
           href="/"

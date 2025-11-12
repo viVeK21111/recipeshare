@@ -52,7 +52,7 @@ export default function Header({ user }: HeaderProps) {
           <div className="flex-shrink-0 items-center">
             <Link href="/" className="flex items-center">
               <div className="  items-center">
-                <img src={'/logo.png'} className='w-6 md:w-7 ml-5 mt-2' ></img>
+                <img src={'/logo1.png'} className='w-6 md:w-7 ml-5 mt-2' ></img>
                 <img src={'/title.png'} className=' h-4'></img>
               </div>
              
@@ -94,6 +94,16 @@ export default function Header({ user }: HeaderProps) {
                   }`}
                 >
                   Stories
+                </Link>
+              )}
+               {user && (
+                <Link
+                  href="/shorts"
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActive('/shorts') ? 'text-gray-900' : 'text-gray-500 hover:text-orange-600'
+                  }`}
+                >
+                  Shorts
                 </Link>
               )}
             </div>
@@ -261,6 +271,9 @@ export default function Header({ user }: HeaderProps) {
           </Link>
           <Link href="/stories" className={`block px-3 py-2 rounded-md text-base font-medium ${theme === 'dark' ? 'text-gray-300 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
            Stories
+          </Link>
+          <Link href="/shorts" className={`block px-3 py-2 rounded-md text-base font-medium ${theme === 'dark' ? 'text-gray-300 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
+           Shorts
           </Link>
           <Link href="/chat" className={`block px-3 py-2 rounded-md text-base font-medium ${theme === 'dark' ? 'text-gray-300 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
            Chat

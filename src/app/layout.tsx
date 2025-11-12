@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
   <head>
-    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="icon" type="image/png" href="/logo1.png" />
     <title>RecipeShare - Share Your Culinary Creations</title>
     <meta name="description" content="A global platform for sharing and discovering amazing recipes from around the world" />
   </head>

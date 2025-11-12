@@ -26,7 +26,14 @@ export default function NewRecipe() {
     prep_time: '',
     cook_time: '',
     servings: '',
-    image_url: ''
+    image_url: '',
+    calories: '',
+    protein: '',
+    carbs: '',
+    fat: '',
+    fiber: '',
+    sugar: '',
+    sodium: ''
   })
 
   const { theme } = useTheme()
@@ -122,6 +129,13 @@ export default function NewRecipe() {
           cook_time: parseInt(formData.cook_time),
           servings: parseInt(formData.servings),
           image_url: formData.image_url || null,
+          calories: formData.calories ? parseInt(formData.calories) : null,
+          protein: formData.protein ? parseFloat(formData.protein) : null,
+          carbs: formData.carbs ? parseFloat(formData.carbs) : null,
+          fat: formData.fat ? parseFloat(formData.fat) : null,
+          fiber: formData.fiber ? parseFloat(formData.fiber) : null,
+          sugar: formData.sugar ? parseFloat(formData.sugar) : null,
+          sodium: formData.sodium ? parseInt(formData.sodium) : null,
           user_id: user.sub
         })
         .select()
@@ -407,6 +421,127 @@ export default function NewRecipe() {
               >
                 + Add Step
               </button>
+            </div>
+
+            <div className={`rounded-lg p-6 space-y-4 ${theme === 'dark' ? 'bg-gray-800 text-gray-100' : 'bg-white text-gray-900'}`}>
+              <h3 className={`text-lg font-semibold mb-4 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
+                Nutrition Information (Optional)
+              </h3>
+              <p className={`text-sm mb-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                Add nutrition values per serving
+              </p>
+
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {/* Calories */}
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Calories (kcal)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={formData.calories}
+                    onChange={(e) => setFormData(prev => ({ ...prev, calories: e.target.value }))}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'}`}
+                    placeholder="0"
+                  />
+                </div>
+
+                {/* Protein */}
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Protein (g)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value={formData.protein}
+                    onChange={(e) => setFormData(prev => ({ ...prev, protein: e.target.value }))}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'}`}
+                    placeholder="0"
+                  />
+                </div>
+
+                {/* Carbs */}
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Carbs (g)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value={formData.carbs}
+                    onChange={(e) => setFormData(prev => ({ ...prev, carbs: e.target.value }))}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'}`}
+                    placeholder="0"
+                  />
+                </div>
+
+                {/* Fat */}
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Fat (g)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value={formData.fat}
+                    onChange={(e) => setFormData(prev => ({ ...prev, fat: e.target.value }))}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'}`}
+                    placeholder="0"
+                  />
+                </div>
+
+                {/* Fiber */}
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Fiber (g)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value={formData.fiber}
+                    onChange={(e) => setFormData(prev => ({ ...prev, fiber: e.target.value }))}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'}`}
+                    placeholder="0"
+                  />
+                </div>
+
+                {/* Sugar */}
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Sugar (g)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value={formData.sugar}
+                    onChange={(e) => setFormData(prev => ({ ...prev, sugar: e.target.value }))}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'}`}
+                    placeholder="0"
+                  />
+                </div>
+
+                {/* Sodium */}
+                <div>
+                  <label className={`block text-sm font-medium mb-2 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Sodium (mg)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={formData.sodium}
+                    onChange={(e) => setFormData(prev => ({ ...prev, sodium: e.target.value }))}
+                    className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 ${theme === 'dark' ? 'bg-gray-700 text-gray-100 border-gray-600 placeholder-gray-400' : 'bg-white text-gray-900 border-gray-300 placeholder-gray-500'}`}
+                    placeholder="0"
+                  />
+                </div>
+              </div>
             </div>
 
             {/* Submit Button */}

@@ -8,6 +8,7 @@ import { useUser } from '@auth0/nextjs-auth0/client'
 import { supabase, Recipe, Comment } from '@/lib/supabase'
 import Header from '@/components/Header'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import NutritionInfo from '@/components/NutritionInfo'
 import { 
   HeartIcon, 
   ChatBubbleLeftIcon, 
@@ -501,6 +502,17 @@ export default function RecipeDetail() {
             </ol>
           </div>
         </div>
+     
+        <NutritionInfo
+          calories={recipe.calories}
+          protein={recipe.protein}
+          carbs={recipe.carbs}
+          fat={recipe.fat}
+          fiber={recipe.fiber}
+          sugar={recipe.sugar}
+          sodium={recipe.sodium}
+          servings={recipe.servings}
+        />
 
         {/* Comments Section */}
         <div className={`rounded-xl shadow-sm p-6 mt-8 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'}`}>
