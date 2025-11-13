@@ -3,9 +3,10 @@ export const dynamic = 'force-dynamic'
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { CircleX } from 'lucide-react';
 import { useUser } from '@auth0/nextjs-auth0/client'
-import { supabase, Recipe, Comment } from '@/lib/supabase'
+import { supabase, Recipe, Comment, formatDateTime } from '@/lib/supabase'
 import Header from '@/components/Header'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import NutritionInfo from '@/components/NutritionInfo'
@@ -24,6 +25,7 @@ import { HeartIcon as HeartSolidIcon ,   BookmarkIcon as BookmarkSolidIcon} from
 import { useTheme } from '@/app/context/ThemeContext'
 
 export default function RecipeDetail() {
+  const router = useRouter()
   const params = useParams() as { id?: string | string[] } | null
   const recipeId = params ? (Array.isArray(params.id) ? params.id?.[0] : params.id) : undefined
   const { user } = useUser()
@@ -446,29 +448,47 @@ export default function RecipeDetail() {
             </div>
 
             {/* Author */}
-            <div className={`flex items-center space-x-3 pb-6 border-b ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
-              {recipe.user?.avatar_url ? (
-                <img
-                  src={recipe.user.avatar_url}
-                  alt={recipe.user.name}
-                  className="w-10 h-10 rounded-full"
-                />
-              ) : (
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'}`}>
-                  <span className={`text-sm font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-600'}`}>
-                    {recipe.user?.name?.charAt(0) || 'U'}
-                  </span>
+                  <button
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                if (user?.sub === recipe.user_id) {
+                  router.push('/profile')
+                } else {
+                  router.push(`/profile/${encodeURIComponent(recipe.user_id)}`)
+                }
+              }}
+              className="flex items-center hover:cursor-pointer space-x-3 hover:opacity-80 transition-opacity"
+            >
+              {/* In Post Header */}
+                {recipe.user?.avatar_url ? (
+                  <img
+                    src={recipe.user.avatar_url}
+                    alt={recipe.user.name}
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                ) : (
+                  <img
+                    src="/defaultU.png"
+                    alt={recipe.user?.name || 'User'}
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                )}
+              <div className="text-left">
+                <p className={`font-semibold ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
+                {recipe.user?.name === recipe.user?.email ?  recipe.user?.name.split('@')[0] : recipe.user?.name.split('@')[0]}
+                </p>
+                <div className={`flex items-center space-x-2 text-xs ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
+               
+              
+                  <span>{formatDateTime(recipe.created_at)}</span>
                 </div>
-              )}
-              <div>
-                <p className={`font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
-                {recipe.user?.name === recipe.user?.email ? recipe.user?.name.split('@')[0] : recipe.user?.name.split('@')[0]}
-                </p>
-                <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-500'}`}>
-                  {new Date(recipe.created_at).toLocaleDateString()}
-                </p>
               </div>
-            </div>
+            </button>
           </div>
         </div>
 
