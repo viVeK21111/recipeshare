@@ -1,5 +1,4 @@
 ﻿
-scroll position maintain after coming back from recipe
 add more filter 
   - gluten free
 live like count update and other count
@@ -10,8 +9,6 @@ following and followers
 changable user profile pic
 red dot on profile for friend new request
 down navbar for mobile screens
-dark mode
-AI chat bot for recipes
 
 
 when many users:
@@ -31,5 +28,6 @@ verified profiles blue mark
 ebook recipes
 subscirption to veiw premium recipes
 comments reply
+edit post for premium users
 
 
