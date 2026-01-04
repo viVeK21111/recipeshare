@@ -122,7 +122,7 @@ export default function RecipeFav({ recipe }: RecipeFavProps) {
     : recipe.description.substring(0, 150) + '...'
 
   return (
-    <div className={`rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow duration-200 md:h-[400px] md:w-[350px]  flex flex-col ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+    <div className={`rounded-lg shadow-sm border overflow-hidden hover:shadow-md transition-shadow duration-200 h-full w-full  flex flex-col ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
       {/* Header */}
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center space-x-3">

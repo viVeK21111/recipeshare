@@ -75,7 +75,7 @@ export default function NutritionInfo({
     fat > 0
 
   return (
-    <div className={`rounded-xl shadow-sm border p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+    <div className={`rounded-xl shadow-sm border mt-5 p-6 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
       <h2 className={`text-2xl font-bold mb-4 flex items-center gap-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
         <BeakerIcon className="h-6 w-6 text-orange-600" />
         Nutrition Facts

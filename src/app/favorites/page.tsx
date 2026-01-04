@@ -84,7 +84,7 @@ export default function FavoritesPage() {
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>
       <Header user={user} />
       <main>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="mb-8">
             <h1 className={`text-3xl font-bold mb-2 ${theme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>My Favorites</h1>
             <p className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
@@ -99,8 +99,8 @@ export default function FavoritesPage() {
           )}
 
           {!loading && recipes.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recipes.map((recipe) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {recipes.map((recipe) => (
                 <RecipeFav key={recipe.id} recipe={recipe} />
               ))}
             </div>
