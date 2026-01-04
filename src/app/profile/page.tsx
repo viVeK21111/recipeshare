@@ -265,9 +265,13 @@ export default function MyProfilePage() {
   
       if (error) throw error
   
-      // Refresh data
-      await fetchPendingRequests()
-      await fetchFriends()
+      // Immediately remove from pending requests UI
+      setPendingRequests(prev => prev.filter(req => req.id !== requesterId))
+      
+      // Refresh data in background
+      fetchPendingRequests()
+      fetchFriends()
+      
       alert('Friend request accepted!')
     } catch (error) {
       console.error('Error accepting request:', error)
@@ -287,15 +291,20 @@ export default function MyProfilePage() {
   
       if (error) throw error
   
-      // Refresh data
-      await fetchPendingRequests()
-      await fetchFriends()
+      // Immediately remove from pending requests UI
+      setPendingRequests(prev => prev.filter(req => req.id !== requesterId))
+      
+      // Refresh data in background
+      fetchPendingRequests()
+      
       alert('Friend request declined.')
     } catch (error) {
       console.error('Error rejecting request:', error)
       alert('Failed to decline request. Please try again.')
     }
   }
+  
+  
 
   return (
     <div className={`min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50'}`}>

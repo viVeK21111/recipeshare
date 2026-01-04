@@ -62,6 +62,10 @@ export default function RecipePost({ recipe }: RecipePostProps) {
     }
   }, [user, recipe.id])
 
+  useEffect(() => {
+    setLikesCount(recipe.likes_count || 0)
+  }, [recipe.likes_count])
+
   const checkIfLiked = async () => {
     if (!user) return
     

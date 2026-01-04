@@ -113,7 +113,7 @@ export default function UserProfilePage() {
     }
     const decodedUserId = decodeURIComponent(userId)
     setIsProcessing(true)
-
+  
     try {
       if (friendshipStatus === 'none') {
         // Send friend request
@@ -124,7 +124,7 @@ export default function UserProfilePage() {
             friend_id: decodedUserId,
             status: 'pending'
           })
-
+  
         if (error) throw error
         setFriendshipStatus('pending_sent')
       } else if (friendshipStatus === 'pending_received') {
@@ -134,17 +134,31 @@ export default function UserProfilePage() {
           .update({ status: 'accepted' })
           .eq('user_id', decodedUserId)
           .eq('friend_id', currentUser.sub)
-
+  
         if (error) throw error
         setFriendshipStatus('friends')
         setFriendsCount(prev => prev + 1)
       } else if (friendshipStatus === 'friends' || friendshipStatus === 'pending_sent') {
-        // Remove friendship
-        await supabase
+        // Remove friendship - Delete both possible directions
+        
+        // Try deleting where current user is user_id
+        const { error: error1 } = await supabase
           .from('friendships')
           .delete()
-          .or(`and(user_id.eq.${currentUser.sub},friend_id.eq.${userId}),and(user_id.eq.${userId},friend_id.eq.${currentUser.sub})`)
-
+          .eq('user_id', currentUser.sub)
+          .eq('friend_id', decodedUserId)
+  
+        // Try deleting where current user is friend_id
+        const { error: error2 } = await supabase
+          .from('friendships')
+          .delete()
+          .eq('user_id', decodedUserId)
+          .eq('friend_id', currentUser.sub)
+  
+        if (error1 && error2) {
+          throw new Error('Failed to remove friendship')
+        }
+  
         setFriendshipStatus('none')
         if (friendshipStatus === 'friends') {
           setFriendsCount(prev => Math.max(0, prev - 1))

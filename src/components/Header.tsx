@@ -1,3 +1,6 @@
+// ==============================================
+// File: components/Header.tsx (UPDATED)
+// ==============================================
 'use client'
 export const dynamic = 'force-dynamic'
 
@@ -5,8 +8,9 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useUser } from '@auth0/nextjs-auth0/client'
-import { SearchIcon,MessageCircleMore } from 'lucide-react'
+import { SearchIcon, MessageCircleMore,BotMessageSquare } from 'lucide-react'
 import { useTheme } from '@/app/context/ThemeContext'
+import { supabase } from '@/lib/supabase'
 import {
   Bars3Icon,
   XMarkIcon,
@@ -24,9 +28,36 @@ export default function Header({ user }: HeaderProps) {
   const pathname = usePathname()
   const [mobileProfileOpen, setMobileProfileOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
-
+  const [pendingRequestsCount, setPendingRequestsCount] = useState(0)
 
   const isActive = (href: string) => pathname === href
+
+  // Fetch pending friend requests count
+  useEffect(() => {
+    if (user) {
+      fetchPendingRequests()
+      
+      // Poll for updates every 30 seconds
+      const interval = setInterval(fetchPendingRequests, 30000)
+      return () => clearInterval(interval)
+    }
+  }, [user])
+
+  const fetchPendingRequests = async () => {
+    if (!user) return
+
+    try {
+      const { count } = await supabase
+        .from('friendships')
+        .select('*', { count: 'exact', head: true })
+        .eq('friend_id', user.sub)
+        .eq('status', 'pending')
+
+      setPendingRequestsCount(count || 0)
+    } catch (error) {
+      console.error('Error fetching pending requests:', error)
+    }
+  }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -40,9 +71,6 @@ export default function Header({ user }: HeaderProps) {
     }
   }, [])
 
- 
-  
-
   return (
     <header className={!user ? `sticky top-0 z-50 bg-black border-b shadow-sm border-gray-700` : theme === 'dark' ? `sticky top-0 z-50 bg-black border-b shadow-sm border-gray-700 ` : `sticky top-0 z-50 bg-white border-b shadow-sm border-gray-200 `}>
       <nav className="max-w-full px-6">
@@ -55,8 +83,6 @@ export default function Header({ user }: HeaderProps) {
                 <img src={'/logo1.png'} className='w-6 md:w-7 ml-5 mt-2' ></img>
                 <img src={'/title.png'} className=' h-4'></img>
               </div>
-             
-              
             </Link>
           </div>
 
@@ -115,7 +141,7 @@ export default function Header({ user }: HeaderProps) {
               
             <button
                 onClick={toggleTheme}
-                className={user ? `p-2 rounded-md focus:outline-none transition-colors mr-2` : `hidden`}
+                className={user ? `p-2 rounded-md focus:outline-none hover:cursor-pointer transition-colors mr-2` : `hidden`}
               >
                 {theme === 'dark' ? (
                   <svg className="h-6 w-6 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -146,9 +172,6 @@ export default function Header({ user }: HeaderProps) {
                     <PlusIcon className="h-4 w-4 mr-2" />
                     Add <p className='hidden md:flex ml-1'>Recipe</p>
                   </Link>
-                
-
-                 
                 </div>
               ) : (
                 <div className="flex hidden lg:block items-center space-x-4">
@@ -178,16 +201,16 @@ export default function Header({ user }: HeaderProps) {
                     <p className="hidden md:block">Search</p>
                   </Link>
                   <Link
-                  className='hidden lg:flex items-center hover:text-orange-600 dark:text-gray-600 text-gray-800 p-2'
+                  className='hidden lg:flex items-center hover:text-orange-600 dark:text-gray-500 text-gray-800 p-2'
                     href="/chat"
                   >
-                    <MessageCircleMore className=" md:mr-2" />
+                    <BotMessageSquare className=" md:mr-2" />
                   </Link>
               </div>
               <div ref={profileRef}>
              <button
                onClick={() => setProfileOpen(!profileOpen)}
-               className="hidden lg:flex items-center hover:cursor-pointer space-x-2 focus:outline-none"
+               className="hidden lg:flex items-center hover:cursor-pointer space-x-2 focus:outline-none relative"
              >
                      {user?.picture ? (
                 <img
@@ -206,14 +229,30 @@ export default function Header({ user }: HeaderProps) {
                   className="rounded-full"
                 />
               )}
+              {/* Red Notification Dot */}
+              {pendingRequestsCount > 0 && (
+                <span className="absolute -top-1 right-20 h-3 w-3 bg-red-600 rounded-full border-2 border-white"></span>
+              )}
                <span className={theme === 'dark' ? `text-sm font-medium text-gray-400` : `text-sm font-medium  text-gray-700`}> {user.name === user.email ?  user.name.split('@')[0] : user.name}</span>
              </button>
 
              {profileOpen && (
                <div className={`absolute right-0 mt-2 w-48 rounded-md shadow-lg z-50 ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
-                <Link href="/profile" className={`block px-4 py-2 text-sm ${theme === 'dark' ? 'text-gray-100 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}>
-                   Profile
-                 </Link>
+                <Link 
+                  href="/profile" 
+                  className={`block px-4 py-2 text-sm relative ${theme === 'dark' ? 'text-gray-100 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}
+                >
+                  <span className="flex items-center justify-between">
+                    Profile
+                    {/* Red Notification Dot beside Profile */}
+                    {pendingRequestsCount > 0 && (
+                      <span className="flex items-center">
+                        <span className="h-2 w-2 bg-red-600 rounded-full mr-1"></span>
+                        <span className="text-xs text-red-600 font-semibold">{pendingRequestsCount}</span>
+                      </span>
+                    )}
+                  </span>
+                </Link>
                  
                  <Link href="/settings" className={`block px-4 py-2 text-sm ${theme === 'dark' ? 'text-gray-100 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-100'}`}>
                    Settings
@@ -238,13 +277,17 @@ export default function Header({ user }: HeaderProps) {
           
 
           {/* Mobile Menu Button */}
-          <div className="lg:hidden ml-auto">
+          <div className="lg:hidden ml-auto relative">
             <button
               type="button"
               className={`${user ? (theme === 'dark' ? 'bg-gray-800' : 'bg-white') : 'bg-black'}  inline-flex items-center justify-center p-2 rounded-md ${theme === 'dark' ? 'text-gray-300 hover:text-gray-100' : 'text-gray-400 hover:text-gray-500'} `}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <span className="sr-only">Open main menu</span>
+              {/* Red Notification Dot on Mobile Menu Button */}
+              {pendingRequestsCount > 0 && (
+                <span className="absolute top-0 right-0 h-3 w-3 bg-red-600 rounded-full border-2 border-white"></span>
+              )}
               {mobileMenuOpen ? (
                 <XMarkIcon className="block h-6 w-6" />
               ) : (
@@ -276,31 +319,37 @@ export default function Header({ user }: HeaderProps) {
            Shorts
           </Link>
           <Link href="/chat" className={`block px-3 py-2 rounded-md text-base font-medium ${theme === 'dark' ? 'text-gray-300 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
-           Chat
+          AI Chat
           </Link>
 
          {/* Profile Toggle Button */}
         <div
           onClick={() => setMobileProfileOpen(!mobileProfileOpen)}
-          className="flex items-center px-3 py-2 cursor-pointer"
+          className="flex items-center px-3 py-2 cursor-pointer relative"
         >
-          {user?.picture ? (
-  <img
-    src={user.picture}
-    alt={user.name || 'User'}
-    width={30}
-    height={30}
-    className="rounded-full"
-  />
-) : (
-  <img
-    src="/defaultU.png"
-    alt={user?.name || 'User'}
-    width={40}
-    height={40}
-    className="rounded-full"
-  />
-)}
+          <div className="relative">
+            {user?.picture ? (
+              <img
+                src={user.picture}
+                alt={user.name || 'User'}
+                width={30}
+                height={30}
+                className="rounded-full"
+              />
+            ) : (
+              <img
+                src="/defaultU.png"
+                alt={user?.name || 'User'}
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+            )}
+            {/* Red Notification Dot on Mobile Profile */}
+            {pendingRequestsCount > 0 && (
+              <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-600 rounded-full border-2 border-white"></span>
+            )}
+          </div>
           <div className="ml-3 flex items-center space-x-1">
             <div>
               <div className={`text-base font-medium ${theme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}> {user.name === user.email ?  user.name.split('@')[0] : user.name}</div>
@@ -320,8 +369,18 @@ export default function Header({ user }: HeaderProps) {
         </div>
         {mobileProfileOpen && (
         <div className={`mt-2 border-t pt-2 ${theme === 'dark' ? 'border-gray-700' : 'border-gray-200'}`}>
-           <Link href="/profile" className={`block px-3 py-2 text-base font-medium ${theme === 'dark' ? 'text-gray-100 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>
-            Profile
+           <Link 
+            href="/profile" 
+            className={`flex items-center justify-between px-3 py-2 text-base font-medium ${theme === 'dark' ? 'text-gray-100 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}
+          >
+            <span>Profile</span>
+            {/* Red Notification Dot beside Profile in Mobile */}
+            {pendingRequestsCount > 0 && (
+              <span className="flex items-center">
+                <span className="h-2 w-2 bg-red-600 rounded-full mr-1"></span>
+                <span className="text-xs text-red-600 font-semibold">{pendingRequestsCount}</span>
+              </span>
+            )}
           </Link>
           
           <Link href="/settings" className={`block px-3 py-2 text-base font-medium ${theme === 'dark' ? 'text-gray-100 hover:text-orange-600' : 'text-gray-500 hover:text-orange-600'}`}>

@@ -7,9 +7,11 @@ following and followers
  - delete account
  - preferences
 changable user profile pic
-red dot on profile for friend new request
 down navbar for mobile screens
 
+red dot on profile for friend new request
+freind request accept refrest
+chat icon change
 
 when many users:
 
