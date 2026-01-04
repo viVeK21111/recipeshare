@@ -9,10 +9,6 @@ following and followers
 changable user profile pic
 down navbar for mobile screens
 
-red dot on profile for friend new request
-freind request accept refrest
-chat icon change
-
 when many users:
 
 private and public accounts

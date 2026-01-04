@@ -1,16 +1,35 @@
 # RecipeShare - Global Recipe Sharing Platform
 
-A modern, social recipe sharing platform where users can discover and share culinary creations from around the world. Built with Next.js, TypeScript, Tailwind CSS, Auth0, and Supabase.
+A modern social recipe sharing platform where food lovers can discover and share culinary creations from around the world. <br>
+![homepage](/public/home.png)
+<br>
 
-## Features
+## Key Features
 
-- 🌍 **Global Recipe Discovery**: Browse recipes from different countries with country-based filtering
-- 🔐 **Authentication**: Secure login with Auth0 (Google OAuth + username/password)
-- ❤️ **Social Features**: Like and comment on recipes
-- 📱 **Responsive Design**: Beautiful, modern UI that works on all devices
-- 🍽️ **Rich Recipe Details**: Complete ingredients, instructions, prep/cook times, and serving sizes
-- 👤 **User Profiles**: Personal recipe collections and user information
-- 🏷️ **Country Tagging**: Each recipe is tagged with its country of origin
+### Recipe Management
+- Create, read, update, delete recipes
+- Rich text editing for ingredients and instructions
+- Image upload support
+- Favorite recipes can be bookmarked
+
+### Social Features
+- Like/unlike recipes
+- Comment system
+- User profiles and recipe collections
+- Friend and unfreind users
+- Best global recipes (TBA)
+- Shorts and stories (TBA)
+
+### Country Filtering
+- Filter recipes by country of origin
+- "All Countries" option for global view
+
+### AI chat bot
+- Users can chat with trained AI bot for food recipes or excellent suggestions and recommendations.
+
+### Food type Filtering
+- Filter recipes by veg,non-veg and vegan
+- Filter recipes by type like breakfast, brunch, dinner etc..
 
 ## Tech Stack
 
@@ -18,7 +37,7 @@ A modern, social recipe sharing platform where users can discover and share culi
 - **Backend**: Next.js API Routes, Supabase
 - **Database**: PostgreSQL (via Supabase)
 - **Authentication**: Auth0
-- **Deployment**: Vercel (recommended)
+- **Deployment**: Vercel 
 
 ## Getting Started
 
@@ -76,41 +95,6 @@ SUPABASE_SERVICE_ROLE_KEY='YOUR_SUPABASE_SERVICE_ROLE_KEY'
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the application.
-
-## Database Schema
-
-The application uses the following main tables:
-
-- **users**: User profiles and authentication data
-- **recipes**: Recipe information with country tagging
-- **likes**: User likes on recipes
-- **comments**: User comments on recipes
-
-See `supabase-schema.sql` for the complete schema.
-
-## Key Features Implementation
-
-### Authentication
-- Auth0 integration with Google OAuth
-- User session management
-- Protected routes and API endpoints
-
-### Recipe Management
-- Create, read, update, delete recipes
-- Rich text editing for ingredients and instructions
-- Image upload support
-- Country-based categorization
-
-### Social Features
-- Like/unlike recipes
-- Comment system
-- User profiles and recipe collections
-
-### Country Filtering
-- Filter recipes by country of origin
-- Visual country flags and names
-- "All Countries" option for global view
 
 ## Deployment
 
